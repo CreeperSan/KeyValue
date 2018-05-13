@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Key Value</string>
+
+    <string name="bootWelcomeString">Welcome</string>
+    <string name="bootFingerprintNotDetectHint">Seems your device not support fingerprint, we can not run right now.pls wait for next version</string>
+    <string name="bootFingerprintNotSecure">Seems your device not enable secure lock screen, we can not run right now.pls wait for next version</string>
+    <string name="bootFingerprintNoFingerPrints">Seems your have not register fingerprint, we can not run right now.pls wait for next version</string>
+    <string name="bootFingerPrintAuthError">Auth error, pls try again</string>
+    <string name="bootFingerPrintAuthSuccess">Auth pass, have a nice day :)</string>
+    <string name="bootFingerPrintAuthFail">Auth fail, pls try again</string>
+
+    <string name="mainTableAdd">Add Table</string>
+    <string name="mainTableAddHint">Click me to add a table</string>
+    <string name="mainDeleteKeyValueHint">Are tou sure to delete this pair?</string>
+    <string name="mainSwipeToSelectTable">Swipe right to check info</string>
+
+    <string name="tableAddNameHint">Please enter name</string>
+    <string name="tableAddDescriptionHint">Please enter description</string>
+    <string name="tableAddAddButton">Add</string>
+    <string name="tableAddNameTooShortHint">Table name too short</string>
+
+    <string name="keyValueAddKeyHint">Please enter key</string>
+    <string name="keyValueAddValueHint">Please enter value</string>
+    <string name="keyValueAddDescription">Please enter description (optional)</string>
+    <string name="keyValueAddButton">Add</string>
+    <string name="keyValueAddKeyFormatError">Name format error</string>
+    <string name="keyValueAddValueFormatError">Value format error</string>
+    <string name="keyValueAddHintNoTableID">Get Table ID Error</string>
+    <string name="keyValueAddHintSuccess">Add successfully</string>
+
+
+    <string name="operationSuccess">操作成功</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+</resources>

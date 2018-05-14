@@ -1,11 +1,13 @@
 package com.creepersan.keyvalue.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.util.FormatCheckUtil
+import com.creepersan.keyvalue.util.IconUtil
 import kotlinx.android.synthetic.main.activity_key_value_add.*
 
 class KeyValueAddActivity : BaseActivity() {
@@ -13,9 +15,12 @@ class KeyValueAddActivity : BaseActivity() {
         const val KEY_INTENT_TABLE_ID = "table_id"
 
         const val VAL_DEFAULT_INTENT_TABLE_ID = -1
+
+        const val REQUEST_CODE_PICK_ICON = 0
     }
 
     private var mTableID = VAL_DEFAULT_INTENT_TABLE_ID
+    private var mIcon = IconPickActivity.VAL_INTENT_ICON_DEFAULT
 
     override val layoutID: Int = R.layout.activity_key_value_add
 
@@ -23,6 +28,7 @@ class KeyValueAddActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         initIntent()
         initButton()
+        initIcon()
     }
 
     private fun initIntent(){
@@ -50,10 +56,28 @@ class KeyValueAddActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            getDatabaseManager().insertKeyValue(keyStr,0,0,valStr,mTableID,desStr)
+            getDatabaseManager().insertKeyValue(keyStr,0,mIcon,valStr,mTableID,desStr)
             toast(R.string.keyValueAddHintSuccess)
             setResult(Activity.RESULT_OK)
             finish()
+        }
+    }
+    private fun initIcon(){
+        keyValueAddIconLayout.setOnClickListener {
+            startActivityForResult(Intent(this@KeyValueAddActivity, IconPickActivity::class.java), REQUEST_CODE_PICK_ICON)
+        }
+        keyValueAddIconIcon.setImageResource(IconUtil.getIcon(mIcon))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            REQUEST_CODE_PICK_ICON -> {
+                if (resultCode == Activity.RESULT_OK){
+                    mIcon = data?.getIntExtra(IconPickActivity.KEY_INTENT_ICON, mIcon) ?: mIcon
+                    keyValueAddIconIcon.setImageResource(IconUtil.getIcon(mIcon))
+                }
+            }
         }
     }
 

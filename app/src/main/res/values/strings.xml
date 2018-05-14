@@ -20,6 +20,7 @@
     <string name="tableAddDescriptionHint">Please enter description</string>
     <string name="tableAddAddButton">Add</string>
     <string name="tableAddNameTooShortHint">Table name too short</string>
+    <string name="tableAddIcon">Icon</string>
 
     <string name="keyValueAddKeyHint">Please enter key</string>
     <string name="keyValueAddValueHint">Please enter value</string>
@@ -31,7 +32,8 @@
     <string name="keyValueAddHintSuccess">Add successfully</string>
 
 
-    <string name="operationSuccess">操作成功</string>
+    <string name="operationSuccess">Success</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>

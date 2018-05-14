@@ -20,6 +20,7 @@
     <string name="tableAddDescriptionHint">请输入描述(可不填)</string>
     <string name="tableAddAddButton">添加</string>
     <string name="tableAddNameTooShortHint">表名太短了</string>
+    <string name="tableAddIcon">图标</string>
 
     <string name="keyValueAddKeyHint">请输入键名</string>
     <string name="keyValueAddValueHint">请输入键</string>
@@ -34,4 +35,5 @@
     <string name="operationSuccess">操作成功</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
+    <string name="save">保存</string>
 </resources>

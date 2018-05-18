@@ -44,6 +44,7 @@ class MainActivity : BaseActivity() {
         initTableData()
         initValueList()
         initFloatButton()
+//        toActivity(RandomGenerateActivity::class.java)
     }
 
     override fun onDestroy() {

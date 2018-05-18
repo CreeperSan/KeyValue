@@ -23,6 +23,7 @@
         <activity android:name=".activity.TableAddActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.KeyValueAddActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.IconPickActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.RandomGenerateActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

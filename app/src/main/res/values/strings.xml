@@ -30,7 +30,9 @@
     <string name="keyValueAddValueFormatError">Value format error</string>
     <string name="keyValueAddHintNoTableID">Get Table ID Error</string>
     <string name="keyValueAddHintSuccess">Add successfully</string>
-
+    
+    <string name="randomGenerateDefaultGenerate">****</string>
+    <string name="randomGenerateGenerate">Generate</string>
 
     <string name="operationSuccess">Success</string>
     <string name="confirm">Confirm</string>

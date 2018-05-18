@@ -31,6 +31,8 @@
     <string name="keyValueAddHintNoTableID">没有传递表名</string>
     <string name="keyValueAddHintSuccess">添加成功</string>
 
+    <string name="randomGenerateDefaultGenerate">****</string>
+    <string name="randomGenerateGenerate">生成</string>
 
     <string name="operationSuccess">操作成功</string>
     <string name="confirm">确认</string>

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuItem
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.util.FormatCheckUtil
@@ -26,11 +28,31 @@ class KeyValueAddActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initActionBar()
         initIntent()
         initButton()
         initIcon()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_tool, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.menuToolRandomStrGenerator -> {
+                toActivity(RandomGenerateActivity::class.java)
+            }
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initActionBar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
     private fun initIntent(){
         mTableID = intent.getIntExtra(KEY_INTENT_TABLE_ID, -1)
         if (mTableID == VAL_DEFAULT_INTENT_TABLE_ID){

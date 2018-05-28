@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -139,6 +140,7 @@ class MainActivity : BaseActivity() {
                 holder.setContent(tableItem.name, tableItem.description)
                 holder.itemView.setOnClickListener {
                     mTableID = tableItem.id
+                    mainAddFab.visibility = View.VISIBLE
                     title = tableItem.name
                     initValueData()
                     showAsData()
@@ -153,6 +155,7 @@ class MainActivity : BaseActivity() {
                                 if (mTableID == tableItem.id){
                                     showAsHint()
                                     mTableID = KeyValueAddActivity.VAL_DEFAULT_INTENT_TABLE_ID
+                                    mainAddFab.visibility = View.GONE
                                     title = getString(R.string.app_name)
                                 }
                             }),

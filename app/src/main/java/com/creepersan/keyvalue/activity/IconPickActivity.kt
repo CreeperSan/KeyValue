@@ -31,6 +31,7 @@ class IconPickActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initActionBar()
         initList()
         initIntent()
     }
@@ -46,6 +47,10 @@ class IconPickActivity : BaseActivity() {
                 setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_INTENT_ICON, mCurrentIcon) })
                 finish()
             }
+            android.R.id.home -> {
+                setResult(Activity.RESULT_CANCELED, Intent().apply {})
+                finish()
+            }
         }
         return true
     }
@@ -54,6 +59,9 @@ class IconPickActivity : BaseActivity() {
      *  初始化
      */
 
+    private fun initActionBar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
     private fun initList(){
         iconPickList.layoutManager = GridLayoutManager(this, 5)
         iconPickList.adapter = iconAdapter

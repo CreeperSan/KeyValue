@@ -1,6 +1,7 @@
 package com.creepersan.keyvalue.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.SeekBar
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
@@ -19,11 +20,15 @@ class RandomGenerateActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initActionBar()
         initSeekBar()
         initButton()
     }
 
 
+    private fun initActionBar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
     private fun initSeekBar(){
         randomGenerateSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -42,6 +47,16 @@ class RandomGenerateActivity : BaseActivity() {
         randomGenerateConfirmButton.setOnClickListener {
             finish()
         }
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

@@ -3,6 +3,7 @@ package com.creepersan.keyvalue.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.util.FormatCheckUtil
@@ -21,6 +22,7 @@ class TableAddActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initActionBar()
         initButton()
         initIcon()
     }
@@ -29,6 +31,9 @@ class TableAddActivity : BaseActivity() {
      *  初始化
      */
 
+    private fun initActionBar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
     private fun initButton(){
         tableAddBtn.setOnClickListener {
             val nameStr = tableAddName.text.toString().trim()
@@ -62,6 +67,15 @@ class TableAddActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

@@ -19,11 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.TableAddActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.KeyValueAddActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.IconPickActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.RandomGenerateActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MainActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".activity.TableAddActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".activity.KeyValueAddActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".activity.IconPickActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".activity.RandomGenerateActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".activity.ExportImportActivity" android:screenOrientation="userPortrait"/>
     </application>
 
 </manifest>

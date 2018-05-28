@@ -18,9 +18,13 @@ class BootActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initActionBar()
         initFingerPrint()
     }
 
+    private fun initActionBar(){
+        supportActionBar?.hide()
+    }
     private fun initFingerPrint(){
         if (mFingerprintManager.isHardwareDetected){
             if (mKeyguardManagger.isDeviceSecure){

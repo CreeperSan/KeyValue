@@ -1,4 +1,4 @@
-package com.creepersan.keyvalue.activity
+package com.creepersan.keyvalue.ui
 
 import android.os.Bundle
 import android.view.MenuItem

@@ -8,7 +8,13 @@ import android.view.ViewGroup
 
 open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    constructor(context:Context,itemViewID:Int,parent:ViewGroup):this(LayoutInflater.from(context).inflate(itemViewID,parent,false))
+
+    fun Context.getLayoutInflater():LayoutInflater{
+        return LayoutInflater.from(this)
+    }
+    fun LayoutInflater.inflateView(view: Int, parent:ViewGroup? = null, attachToParent:Boolean = false):View{
+        return this.inflate(view, parent, attachToParent)
+    }
 
 
 }

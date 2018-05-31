@@ -12,19 +12,20 @@
         android:supportsRtl="true"
         android:name=".App"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.BootActivity" android:screenOrientation="portrait">
+        <activity android:name=".ui.BootActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.TableAddActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.KeyValueAddActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.IconPickActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.RandomGenerateActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.ExportImportActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.MainActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.TableAddActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.KeyValueAddActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.IconPickActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.RandomGenerateActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.ExportImportActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.SettingView" android:screenOrientation="userPortrait"/>
     </application>
 
 </manifest>

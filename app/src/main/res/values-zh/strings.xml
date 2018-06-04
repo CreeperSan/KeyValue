@@ -40,4 +40,12 @@
     <string name="save">保存</string>
 
     <string name="randomStrGenerator">随机字符生成器</string>
+
+    <string name="menuMainSetting">设置</string>
+
+    <string name="settingGroupBackup">备份设定</string>
+    <string name="settingItemImport">导入数据</string>
+    <string name="settingDescriptionImport">从本地存储导入数据</string>
+    <string name="settingItemExport">导出数据</string>
+    <string name="settingDescriptionExport">导出数据到本地存储</string>
 </resources>

@@ -93,7 +93,8 @@ class IconPickActivity : BaseActivity() {
     private inner class IconAdapter : RecyclerView.Adapter<IconHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconHolder = IconHolder(parent)
         override fun getItemCount(): Int = iconList.size
-        override fun onBindViewHolder(holder: IconHolder, position: Int) {
+        override fun onBindViewHolder(holder: IconHolder, pos: Int) {
+            val position = holder.adapterPosition
             val iconItem = iconList[position]
             holder.setIcon(IconUtil.getIcon(iconItem))
             if (mCurrentIcon == position){

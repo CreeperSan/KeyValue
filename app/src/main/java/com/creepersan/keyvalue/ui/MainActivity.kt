@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -70,8 +72,21 @@ class MainActivity : BaseActivity() {
     }
 
 
+    /* Menu */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.menuMainSetting -> { toActivity(SettingActivity::class.java) }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     /**
-     *  初始化
+     *  Init
      */
 
     private fun initTableList(){
@@ -109,7 +124,7 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     *  UI操作
+     *  UI Operation
      */
     private fun showAsHint(){
         mainContentEmptyLayout.setVisible()
@@ -121,7 +136,7 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     *  内部类
+     *  Inner Class
      */
     private inner class TableAdapter : RecyclerView.Adapter<TableViewHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TableViewHolder = TableViewHolder(parent)

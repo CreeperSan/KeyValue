@@ -3,6 +3,8 @@ package com.creepersan.keyvalue.bean.setting
 abstract class BaseSettingItem {
 
     companion object {
+        const val TYPE_GROUP = -1
+
         const val TYPE_NORMAl = 0
     }
 

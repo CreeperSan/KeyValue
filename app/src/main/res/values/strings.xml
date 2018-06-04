@@ -40,4 +40,12 @@
     <string name="save">Save</string>
 
     <string name="randomStrGenerator">Random string generator</string>
+
+    <string name="menuMainSetting">Setting</string>
+
+    <string name="settingGroupBackup">Backup</string>
+    <string name="settingItemImport">Import Data</string>
+    <string name="settingDescriptionImport">Import data from local storage</string>
+    <string name="settingItemExport">Export Data</string>
+    <string name="settingDescriptionExport">Export data to local storage</string>
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ProgressBar
+        android:id="@+id/exportProgress"
+        app:layout_constraintTop_toTopOf="parent"
+        android:progress="50"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/exportProgress"
+        android:id="@+id/exportHintText"
+        android:text="@string/exportHintDefault"
+        android:lines="2"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/exportActionButton"
+        android:text="@string/exportActionButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        app:layout_constraintBottom_toTopOf="@id/exportActionButton"
+        app:layout_constraintTop_toBottomOf="@id/exportHintText"
+        android:id="@+id/exportTableList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+</android.support.constraint.ConstraintLayout>

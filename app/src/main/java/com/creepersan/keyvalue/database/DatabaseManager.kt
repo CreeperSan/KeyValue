@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import org.json.JSONArray
+import org.json.JSONObject
 
 class DatabaseManager() {
 
@@ -45,8 +47,8 @@ class DatabaseManager() {
         }
         return resultList
     }
-    fun getAllKeyValueList():ArrayList<KeyValyePair>{
-        val resultList = ArrayList<KeyValyePair>()
+    fun getAllKeyValueList():ArrayList<KeyValuePair>{
+        val resultList = ArrayList<KeyValuePair>()
         fastQuery(DBKey.TABLE_KEY_VALUE_PAIR).apply {
             while(moveToNext()){
                 resultList.add(getKeyValue())
@@ -55,8 +57,8 @@ class DatabaseManager() {
         }
         return resultList
     }
-    fun getAllKeyValueListInTable(tableID:Int):ArrayList<KeyValyePair>{
-        val resultList = ArrayList<KeyValyePair>()
+    fun getAllKeyValueListInTable(tableID:Int):ArrayList<KeyValuePair>{
+        val resultList = ArrayList<KeyValuePair>()
         database.query(DBKey.TABLE_KEY_VALUE_PAIR,null,"${DBKey.KEY_KEY_VALUE_PAIR_TABLE} = ?", arrayOf(tableID.toString()),null,null,null).apply {
             while(moveToNext()){
                 resultList.add(getKeyValue())
@@ -97,6 +99,17 @@ class DatabaseManager() {
         database.delete(DBKey.TABLE_TABLE, "${DBKey.KEY_TABLE_ID} = ?", arrayOf(id.toString()))
     }
 
+    fun getJsonData(tableName:String):JSONArray{
+        val jsonArray = JSONArray()
+        val cursor = database.query(DBKey.TABLE_KEY_VALUE_PAIR,null,"${DBKey.KEY_KEY_VALUE_PAIR_TABLE}=?", arrayOf(tableName),null,null,null)
+        while (cursor.moveToNext()){
+            val tmpJson = cursor.getKeyValue().toJson()
+            jsonArray.put(tmpJson)
+        }
+        cursor.close()
+        return jsonArray
+    }
+
 
     /**
      *  快速操作
@@ -118,8 +131,8 @@ class DatabaseManager() {
                 getString(5)
         )
     }
-    private fun Cursor.getKeyValue():KeyValyePair{
-        return KeyValyePair(
+    private fun Cursor.getKeyValue():KeyValuePair{
+        return KeyValuePair(
                 getInt(0),
                 getString(1),
                 getInt(2),
@@ -129,6 +142,19 @@ class DatabaseManager() {
                 getLong(6),
                 getString(7)
         )
+    }
+
+    private fun KeyValuePair.toJson():JSONObject{
+        val jsonObject = JSONObject()
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_ID, this.id)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_NAME, this.name)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_TYPE, this.type)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_ICON, this.icon)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_VALUE, this.value)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_TABLE, this.table)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_DESCRIPTION, this.description)
+        jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_CREATE_TIME, this.createTime)
+        return jsonObject
     }
 
 

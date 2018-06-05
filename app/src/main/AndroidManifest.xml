@@ -26,6 +26,7 @@
         <activity android:name=".ui.RandomGenerateActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".ui.ExportImportActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".ui.SettingActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.ExportActivity" android:screenOrientation="userPortrait"/>
     </application>
 
 </manifest>

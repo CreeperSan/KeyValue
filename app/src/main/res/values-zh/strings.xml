@@ -48,4 +48,7 @@
     <string name="settingDescriptionImport">从本地存储导入数据</string>
     <string name="settingItemExport">导出数据</string>
     <string name="settingDescriptionExport">导出数据到本地存储</string>
+    
+    <string name="exportHintDefault">正在等待操作</string>
+    <string name="exportActionButton">导出</string>
 </resources>

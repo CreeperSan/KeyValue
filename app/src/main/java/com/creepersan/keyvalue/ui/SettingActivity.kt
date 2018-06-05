@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.creepersan.keyvalue.App
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.bean.setting.BaseSettingItem
 import com.creepersan.keyvalue.bean.setting.SettingGroupBean
+import com.creepersan.keyvalue.bean.setting.SettingKey
 import com.creepersan.keyvalue.bean.setting.SettingNormalBean
 import com.creepersan.keyvalue.widget.setting.SettingGroupViewHolder
 import com.creepersan.keyvalue.widget.setting.SettingNormalViewHolder
@@ -37,8 +39,8 @@ class SettingActivity : BaseActivity() {
     private fun initSettingItem(){
         // Backup Part
         settingItemList.add(SettingGroupBean(getString(R.string.settingGroupBackup)))
-        settingItemList.add(SettingNormalBean(R.drawable.ic_import_black_24dp ,getString(R.string.settingItemImport),getString(R.string.settingDescriptionImport)))
-        settingItemList.add(SettingNormalBean(R.drawable.ic_export_black_24dp ,getString(R.string.settingItemExport),getString(R.string.settingDescriptionExport)))
+        settingItemList.add(SettingNormalBean(R.drawable.ic_import_black_24dp, SettingKey.IMPORT ,getString(R.string.settingItemImport),getString(R.string.settingDescriptionImport)))
+        settingItemList.add(SettingNormalBean(R.drawable.ic_export_black_24dp, SettingKey.EXPORT ,getString(R.string.settingItemExport),getString(R.string.settingDescriptionExport)))
         // About Part
     }
     private fun initSettingView(){
@@ -59,10 +61,10 @@ class SettingActivity : BaseActivity() {
     /* Inner class */
     private inner class SettingListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
+        /* HERE IS FOR ADAPTER */
         override fun getItemViewType(position: Int): Int {
             return settingItemList[position].type
         }
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             when(viewType){
                 BaseSettingItem.TYPE_GROUP  -> { return SettingGroupViewHolder(this@SettingActivity, parent) }
@@ -70,11 +72,9 @@ class SettingActivity : BaseActivity() {
             }
             return SettingNormalViewHolder(this@SettingActivity, parent)
         }
-
         override fun getItemCount(): Int {
             return settingItemList.size
         }
-
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when(holder.itemViewType){
                 BaseSettingItem.TYPE_GROUP  -> { initGroupViewHolder ( holder as SettingGroupViewHolder, settingItemList[position] as SettingGroupBean ) }
@@ -82,13 +82,25 @@ class SettingActivity : BaseActivity() {
             }
         }
 
+        /* HERE IS FOR HOLDER */
         private fun initGroupViewHolder(holder: SettingGroupViewHolder, bean:SettingGroupBean){
             holder.setText(bean.title)
+            holder.itemView.setOnClickListener(null)
         }
         private fun initNormalViewHolder(holder: SettingNormalViewHolder, bean:SettingNormalBean){
             holder.iconView.setImageResource(bean.icon)
             holder.titleView.text = bean.title
             holder.descriptionView.text = bean.description
+            holder.itemView.setOnClickListener {
+                when(bean.key){
+                    SettingKey.IMPORT -> {
+
+                    }
+                    SettingKey.EXPORT -> {
+                        toActivity(ExportActivity::class.java)
+                    }
+                }
+            }
         }
 
     }

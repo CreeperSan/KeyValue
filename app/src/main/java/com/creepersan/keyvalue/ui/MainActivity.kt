@@ -16,7 +16,7 @@ import android.widget.TextView
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.base.BaseViewHolder
-import com.creepersan.keyvalue.database.KeyValyePair
+import com.creepersan.keyvalue.database.KeyValuePair
 import com.creepersan.keyvalue.util.IconUtil
 import com.creepersan.keyvalue.database.Table
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
     override val layoutID: Int = R.layout.activity_main
 
     private var mTableList = ArrayList<Table>()
-    private var mValueList = ArrayList<KeyValyePair>()
+    private var mValueList = ArrayList<KeyValuePair>()
     private val mTableAdapter by lazy { TableAdapter() }
     private val mValueAdapter by lazy { KeyValueAdapter() }
     private var mTableID = KeyValueAddActivity.VAL_DEFAULT_INTENT_TABLE_ID

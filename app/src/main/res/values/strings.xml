@@ -48,4 +48,7 @@
     <string name="settingDescriptionImport">Import data from local storage</string>
     <string name="settingItemExport">Export Data</string>
     <string name="settingDescriptionExport">Export data to local storage</string>
+
+    <string name="exportHintDefault">Waiting for command..</string>
+    <string name="exportActionButton">Export</string>
 </resources>

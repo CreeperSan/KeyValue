@@ -51,4 +51,8 @@
     
     <string name="exportHintDefault">正在等待操作</string>
     <string name="exportActionButton">导出</string>
+
+    <string name="addKeyValueSave">保存</string>
+    <string name="addKeyValueKey">键</string>
+    <string name="addKeyValueValue">值</string>
 </resources>

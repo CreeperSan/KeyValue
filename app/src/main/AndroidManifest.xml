@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.BootActivity" android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -25,6 +25,7 @@
         <activity android:name=".ui.ExportImportActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".ui.SettingActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".ui.ExportActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".ui.AddKeyValueActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

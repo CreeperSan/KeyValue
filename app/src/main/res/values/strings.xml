@@ -51,4 +51,8 @@
 
     <string name="exportHintDefault">Waiting for command..</string>
     <string name="exportActionButton">Export</string>
+
+    <string name="addKeyValueSave">Save</string>
+    <string name="addKeyValueKey">Key</string>
+    <string name="addKeyValueValue">Value</string>
 </resources>

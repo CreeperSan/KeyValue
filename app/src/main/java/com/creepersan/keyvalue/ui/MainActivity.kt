@@ -121,6 +121,10 @@ class MainActivity : BaseActivity() {
                 putExtra(KeyValueAddActivity.KEY_INTENT_TABLE_ID, mTableID)
             }, REQUEST_CODE_VALUE_EDIT)
         }
+        mainAddFab.setOnLongClickListener {
+            startActivity(Intent(this@MainActivity, AddKeyValueActivity::class.java))
+            return@setOnLongClickListener true
+        }
     }
 
     /**

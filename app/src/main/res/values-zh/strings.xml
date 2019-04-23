@@ -55,4 +55,9 @@
     <string name="addKeyValueSave">保存</string>
     <string name="addKeyValueKey">键</string>
     <string name="addKeyValueValue">值</string>
+    <string name="addKeyValueAddItem">添加键值对</string>
+    <string name="addKeyValueAddKeyHint">添加键</string>
+    <string name="addKeyValueAddValueHint">添加值</string>
+    <string name="addKeyValueDialogPosButton">确定</string>
+    <string name="addKeyValueDialogNegButton">关闭</string>
 </resources>

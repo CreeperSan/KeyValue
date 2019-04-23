@@ -55,4 +55,9 @@
     <string name="addKeyValueSave">Save</string>
     <string name="addKeyValueKey">Key</string>
     <string name="addKeyValueValue">Value</string>
+    <string name="addKeyValueAddItem">Add Item</string>
+    <string name="addKeyValueAddKeyHint">Add Key</string>
+    <string name="addKeyValueAddValueHint">Add Value</string>
+    <string name="addKeyValueDialogPosButton">OK</string>
+    <string name="addKeyValueDialogNegButton">Close</string>
 </resources>

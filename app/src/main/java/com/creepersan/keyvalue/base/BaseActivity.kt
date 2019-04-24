@@ -13,6 +13,8 @@ import android.view.View
 import android.widget.Toast
 import com.creepersan.keyvalue.App
 import com.creepersan.keyvalue.database.DatabaseManager
+import com.creepersan.keyvalue.database.KeyValueDao
+import com.creepersan.keyvalue.database.TableDao
 import java.lang.ref.WeakReference
 
 @SuppressLint("Registered")
@@ -37,9 +39,26 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    protected fun getTableDao():TableDao{
+        return app.getDatabase().getTableDao()
+    }
+
+    protected fun getKeyValueDao():KeyValueDao{
+        return app.getDatabase().getKeyValueDao()
+    }
+
+
     /**
      *  提供的一些便捷方法
      */
+    fun View.show(){
+        this.visibility = View.VISIBLE
+    }
+
+    fun View.hide(){
+        this.visibility = View.GONE
+    }
+
     fun <T> toActivity(clazz:Class<T>, isFinish:Boolean = false){
         startActivity(Intent(this, clazz))
         if (isFinish){

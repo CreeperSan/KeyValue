@@ -1,7 +1,6 @@
-package com.creepersan.keyvalue.ui
+package com.creepersan.keyvalue.activity
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,8 +13,9 @@ import android.widget.TextView
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.base.toString
+import com.creepersan.keyvalue.database.KeyValue
 import kotlinx.android.synthetic.main.activity_add_key_value.*
-import org.w3c.dom.Text
+import org.json.JSONObject
 import java.lang.Exception
 import java.util.ArrayList
 
@@ -84,6 +84,31 @@ class AddKeyValueActivity : BaseActivity() {
     }
     private fun onSaveKeyValueClick(){
         // 检查数据
+        // 检查键是否重复
+        val tmpKeySet = HashSet<String>()
+        mItemList.forEach { bean ->
+            if (bean is KeyValueBean){
+                if (bean.key == "" || bean.value == ""){
+                    toast("不能为空哦")
+                    return
+                }
+                if (tmpKeySet.contains(bean.key)){
+                    toast("键不能重复哦")
+                    return
+                }
+                tmpKeySet.add(bean.key)
+            }
+        }
+        // 生成数据库存储对象
+        // 保存到数据库
+        val json = JSONObject()
+        mItemList.forEach { bean ->
+            if (bean is KeyValueBean){
+                json.put(bean.key, bean.value)
+            }
+        }
+        toast(json.toString())
+        log(json.toString())
         // 结束
         finish()
     }
@@ -107,7 +132,7 @@ class AddKeyValueActivity : BaseActivity() {
             editText.setTextColor(resources.getColor(R.color.black, theme))
             val dialog = AlertDialog.Builder(context)
                     .setView(editText)
-                    .setPositiveButton(R.string.addKeyValueDialogPosButton.toString(context)) { dialog, which ->
+                    .setPositiveButton(R.string.addKeyValueDialogPosButton.toString(context)) { _, _ ->
                         onDialogConfirmListener?.invoke(editText.text.toString())
                     }
                     .setNegativeButton(R.string.addKeyValueDialogNegButton.toString(context), null)

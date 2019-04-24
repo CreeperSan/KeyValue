@@ -1,4 +1,4 @@
-package com.creepersan.keyvalue.ui
+package com.creepersan.keyvalue.activity
 
 import android.content.Intent
 import android.os.Bundle

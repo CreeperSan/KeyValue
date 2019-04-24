@@ -1,4 +1,4 @@
-package com.creepersan.keyvalue.ui
+package com.creepersan.keyvalue.activity
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -9,16 +9,16 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.base.BaseViewHolder
-import com.creepersan.keyvalue.database.KeyValuePair
-import com.creepersan.keyvalue.util.IconUtil
+import com.creepersan.keyvalue.database.KeyValuePairOld
 import com.creepersan.keyvalue.database.Table
+import com.creepersan.keyvalue.util.IconUtil
+import com.creepersan.keyvalue.database.TableOld
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 
@@ -31,11 +31,12 @@ class MainActivity : BaseActivity() {
 
     override val layoutID: Int = R.layout.activity_main
 
-    private var mTableList = ArrayList<Table>()
-    private var mValueList = ArrayList<KeyValuePair>()
+    private var mValueList = ArrayList<KeyValuePairOld>()
     private val mTableAdapter by lazy { TableAdapter() }
     private val mValueAdapter by lazy { KeyValueAdapter() }
     private var mTableID = KeyValueAddActivity.VAL_DEFAULT_INTENT_TABLE_ID
+
+    private var mTableList = ArrayList<Table>()
 
     /**
      *  生命周期回调
@@ -43,11 +44,11 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initTableList()
+        initTableListView()
+        initValueListView()
+
         initTableData()
-        initValueList()
         initFloatButton()
-//        toActivity(RandomGenerateActivity::class.java)
     }
 
     override fun onDestroy() {
@@ -89,20 +90,15 @@ class MainActivity : BaseActivity() {
      *  Init
      */
 
-    private fun initTableList(){
+    private fun initTableListView(){
         mainTableList.layoutManager = LinearLayoutManager(this)
         mainTableList.adapter = mTableAdapter
     }
     private fun initTableData(){
         mTableList.clear()
-        submitTask(this,{
-            return@submitTask getDatabaseManager().getAllTableList()
-        },{ activity, result ->
-            activity.mTableList = result
-            activity.mTableAdapter.notifyDataSetChanged()
-        })
+        mTableList.addAll(getTableDao().getAllTable())
     }
-    private fun initValueList(){
+    private fun initValueListView(){
         mainContentList.layoutManager = LinearLayoutManager(this)
         mainContentList.adapter = mValueAdapter
     }
@@ -156,28 +152,28 @@ class MainActivity : BaseActivity() {
             }else{  // 如果是列表
                 val tableItem = mTableList[position]
                 holder.setIcon(IconUtil.getIcon(tableItem.icon))
-                holder.setContent(tableItem.name, tableItem.description)
+                holder.setContent(tableItem.title, tableItem.subtitle)
                 holder.itemView.setOnClickListener {
                     mTableID = tableItem.id
-                    mainAddFab.visibility = View.VISIBLE
-                    title = tableItem.name
+                    mainAddFab.show()
+                    title = tableItem.title
                     initValueData()
                     showAsData()
                     mainDrawerLayout.closeDrawers()
                 }
                 holder.itemView.setOnLongClickListener {
                     showAlert(message = getString(R.string.mainDeleteKeyValueHint),
-                            posButton = DialogActionButton(getString(R.string.confirm),{
+                            posButton = DialogActionButton(getString(R.string.confirm)) {
                                 getDatabaseManager().deleteTable(tableItem.id)
                                 toast(R.string.operationSuccess)
                                 initTableData()
                                 if (mTableID == tableItem.id){
                                     showAsHint()
                                     mTableID = KeyValueAddActivity.VAL_DEFAULT_INTENT_TABLE_ID
-                                    mainAddFab.visibility = View.GONE
+                                    mainAddFab.hide()
                                     title = getString(R.string.app_name)
                                 }
-                            }),
+                            },
                             negButton = DialogActionButton(getString(R.string.cancel),{}))
                     true
                 }

@@ -1,4 +1,4 @@
-package com.creepersan.keyvalue.ui
+package com.creepersan.keyvalue.activity
 
 import com.creepersan.keyvalue.base.BaseActivity
 

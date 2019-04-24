@@ -37,8 +37,8 @@ class DatabaseManager() {
      *  表的操作
      */
 
-    fun getAllTableList():ArrayList<Table>{
-        val resultList = ArrayList<Table>()
+    fun getAllTableList():ArrayList<TableOld>{
+        val resultList = ArrayList<TableOld>()
         fastQuery(DBKey.TABLE_TABLE).apply {
             while (moveToNext()){
                 resultList.add(getTable())
@@ -47,8 +47,8 @@ class DatabaseManager() {
         }
         return resultList
     }
-    fun getAllKeyValueList():ArrayList<KeyValuePair>{
-        val resultList = ArrayList<KeyValuePair>()
+    fun getAllKeyValueList():ArrayList<KeyValuePairOld>{
+        val resultList = ArrayList<KeyValuePairOld>()
         fastQuery(DBKey.TABLE_KEY_VALUE_PAIR).apply {
             while(moveToNext()){
                 resultList.add(getKeyValue())
@@ -57,8 +57,8 @@ class DatabaseManager() {
         }
         return resultList
     }
-    fun getAllKeyValueListInTable(tableID:Int):ArrayList<KeyValuePair>{
-        val resultList = ArrayList<KeyValuePair>()
+    fun getAllKeyValueListInTable(tableID:Int):ArrayList<KeyValuePairOld>{
+        val resultList = ArrayList<KeyValuePairOld>()
         database.query(DBKey.TABLE_KEY_VALUE_PAIR,null,"${DBKey.KEY_KEY_VALUE_PAIR_TABLE} = ?", arrayOf(tableID.toString()),null,null,null).apply {
             while(moveToNext()){
                 resultList.add(getKeyValue())
@@ -121,8 +121,8 @@ class DatabaseManager() {
     /**
      *  拓展方法
      */
-    private fun Cursor.getTable():Table{
-        return Table(
+    private fun Cursor.getTable():TableOld{
+        return TableOld(
                 getInt(0),
                 getString(1),
                 getInt(2),
@@ -131,8 +131,8 @@ class DatabaseManager() {
                 getString(5)
         )
     }
-    private fun Cursor.getKeyValue():KeyValuePair{
-        return KeyValuePair(
+    private fun Cursor.getKeyValue():KeyValuePairOld{
+        return KeyValuePairOld(
                 getInt(0),
                 getString(1),
                 getInt(2),
@@ -144,7 +144,7 @@ class DatabaseManager() {
         )
     }
 
-    private fun KeyValuePair.toJson():JSONObject{
+    private fun KeyValuePairOld.toJson():JSONObject{
         val jsonObject = JSONObject()
         jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_ID, this.id)
         jsonObject.put(DBKey.KEY_KEY_VALUE_PAIR_NAME, this.name)

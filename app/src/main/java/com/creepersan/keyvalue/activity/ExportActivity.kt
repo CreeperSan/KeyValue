@@ -1,4 +1,4 @@
-package com.creepersan.keyvalue.ui
+package com.creepersan.keyvalue.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.creepersan.keyvalue.App
 import com.creepersan.keyvalue.R

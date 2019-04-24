@@ -1,4 +1,4 @@
-package com.creepersan.keyvalue.ui
+package com.creepersan.keyvalue.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
+import com.creepersan.keyvalue.database.Table
 import com.creepersan.keyvalue.util.FormatCheckUtil
 import com.creepersan.keyvalue.util.IconUtil
 import kotlinx.android.synthetic.main.activity_table_add.*
@@ -44,7 +45,15 @@ class TableAddActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            getDatabaseManager().insertTable(nameStr,0,mIcon,description)
+            getTableDao().insertTable(Table().apply {
+                val currentTime = System.currentTimeMillis()
+                title = nameStr
+                subtitle = description
+                icon = mIcon
+                createTime = currentTime
+                modifyTime = currentTime
+                extra = ""
+            })
             setResult(Activity.RESULT_OK)
             toast(R.string.operationSuccess)
             finish()

@@ -58,6 +58,9 @@
     <string name="addKeyValueAddItem">Add Item</string>
     <string name="addKeyValueAddKeyHint">Add Key</string>
     <string name="addKeyValueAddValueHint">Add Value</string>
+    <string name="addKeyValueAddValueTitle">Title</string>
+    <string name="addKeyValueAddValueTitleDialogHint">Please enter title</string>
+    <string name="addKeyValueAddValueTitleToastMissingTableID">Missing table ID</string>
     <string name="addKeyValueDialogPosButton">OK</string>
     <string name="addKeyValueDialogNegButton">Close</string>
 </resources>

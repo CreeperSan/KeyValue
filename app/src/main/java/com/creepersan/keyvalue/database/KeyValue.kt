@@ -8,10 +8,11 @@ import android.arch.persistence.room.PrimaryKey
 class KeyValue {
     companion object{
         const val TABLE_NAME = "KeyValueItem"
+        const val KEY_ID = "id"
         const val KEY_TITLE = "title"
         const val KEY_VALUE = "value"
         const val KEY_ICON = "icon"
-        const val KEY_TABLE = "table"
+        const val KEY_TABLE = "table_id"
         const val KEY_CREATE_TIME = "create_time"
         const val KEY_MODIFY_TIME = "modify_time"
         const val KEY_EXTRA = "extra"

@@ -1,7 +1,6 @@
 package com.creepersan.keyvalue.activity
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.DrawableRes
@@ -15,10 +14,9 @@ import android.widget.TextView
 import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.base.BaseViewHolder
-import com.creepersan.keyvalue.database.KeyValuePairOld
+import com.creepersan.keyvalue.database.KeyValue
 import com.creepersan.keyvalue.database.Table
 import com.creepersan.keyvalue.util.IconUtil
-import com.creepersan.keyvalue.database.TableOld
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 
@@ -31,10 +29,10 @@ class MainActivity : BaseActivity() {
 
     override val layoutID: Int = R.layout.activity_main
 
-    private var mValueList = ArrayList<KeyValuePairOld>()
+    private var mValueList = ArrayList<KeyValue>()
     private val mTableAdapter by lazy { TableAdapter() }
     private val mValueAdapter by lazy { KeyValueAdapter() }
-    private var mTableID = KeyValueAddActivity.VAL_DEFAULT_INTENT_TABLE_ID
+    private var mTableID = AddKeyValueActivity.DEFAULT_INTENT_TABLE
 
     private var mTableList = ArrayList<Table>()
 
@@ -97,6 +95,7 @@ class MainActivity : BaseActivity() {
     private fun initTableData(){
         mTableList.clear()
         mTableList.addAll(getTableDao().getAllTable())
+        mTableAdapter.notifyDataSetChanged()
     }
     private fun initValueListView(){
         mainContentList.layoutManager = LinearLayoutManager(this)
@@ -104,24 +103,23 @@ class MainActivity : BaseActivity() {
     }
     private fun initValueData(){
         mValueList.clear()
-        submitTask(this, {
-            return@submitTask getDatabaseManager().getAllKeyValueListInTable(mTableID)
-        },{ activity, result ->
-            activity.mValueList = result
-            activity.mValueAdapter.notifyDataSetChanged()
-        })
+        mValueList.addAll(getKeyValueDao().getAllKeyValue(mTableID))
+        mValueAdapter.notifyDataSetChanged()
     }
     private fun initFloatButton(){
         mainAddFab.setOnClickListener{
-            startActivityForResult(Intent(this@MainActivity, KeyValueAddActivity::class.java).apply {
-                putExtra(KeyValueAddActivity.KEY_INTENT_TABLE_ID, mTableID)
+            startActivityForResult(Intent(this@MainActivity, AddKeyValueActivity::class.java).apply {
+                putExtra(AddKeyValueActivity.KEY_INTENT_TABLE, mTableID)
             }, REQUEST_CODE_VALUE_EDIT)
         }
         mainAddFab.setOnLongClickListener {
-            startActivity(Intent(this@MainActivity, AddKeyValueActivity::class.java))
+            startActivityForResult(Intent(this@MainActivity, KeyValueAddActivity::class.java).apply {
+                putExtra(KeyValueAddActivity.KEY_INTENT_TABLE_ID, mTableID)
+            }, REQUEST_CODE_VALUE_EDIT)
             return@setOnLongClickListener true
         }
     }
+
 
     /**
      *  UI Operation
@@ -133,6 +131,13 @@ class MainActivity : BaseActivity() {
     private fun showAsData(){
         mainContentEmptyLayout.setGone()
         mainContentList.setVisible()
+    }
+
+    private fun onKeyValueClick(keyValue:KeyValue){
+        val intent = Intent(this, AddKeyValueActivity::class.java)
+        intent.putExtra(AddKeyValueActivity.KEY_INTENT_TABLE, mTableID)
+        intent.putExtra(AddKeyValueActivity.KEY_INTENT_KEY_VALUE_ID, keyValue.id)
+        startActivityForResult(intent, REQUEST_CODE_VALUE_EDIT)
     }
 
     /**
@@ -207,11 +212,9 @@ class MainActivity : BaseActivity() {
         override fun onBindViewHolder(holder: KeyValueHolder, position: Int) {
             val keyValueItem = mValueList[position]
             holder.setIcon(IconUtil.getIcon(keyValueItem.icon))
-            holder.setTitle(keyValueItem.name)
+            holder.setTitle(keyValueItem.title)
             holder.itemView.setOnClickListener {
-                AlertDialog.Builder(this@MainActivity)
-                        .setMessage(keyValueItem.value)
-                        .show()
+                onKeyValueClick(keyValueItem)
             }
             holder.itemView.setOnLongClickListener {
                 showAlert(message = getString(R.string.mainDeleteKeyValueHint),

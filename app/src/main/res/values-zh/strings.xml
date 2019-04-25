@@ -58,6 +58,9 @@
     <string name="addKeyValueAddItem">添加键值对</string>
     <string name="addKeyValueAddKeyHint">添加键</string>
     <string name="addKeyValueAddValueHint">添加值</string>
+    <string name="addKeyValueAddValueTitle">标题</string>
+    <string name="addKeyValueAddValueTitleDialogHint">请输入标题</string>
+    <string name="addKeyValueAddValueTitleToastMissingTableID">表ID丢失</string>
     <string name="addKeyValueDialogPosButton">确定</string>
     <string name="addKeyValueDialogNegButton">关闭</string>
 </resources>

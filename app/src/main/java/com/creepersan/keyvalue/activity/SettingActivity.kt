@@ -11,6 +11,8 @@ import com.creepersan.keyvalue.bean.setting.BaseSettingItem
 import com.creepersan.keyvalue.bean.setting.SettingGroupBean
 import com.creepersan.keyvalue.bean.setting.SettingKey
 import com.creepersan.keyvalue.bean.setting.SettingNormalBean
+import com.creepersan.keyvalue.database.Database
+import com.creepersan.keyvalue.util.BackupUtils
 import com.creepersan.keyvalue.widget.setting.SettingGroupViewHolder
 import com.creepersan.keyvalue.widget.setting.SettingNormalViewHolder
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -92,10 +94,21 @@ class SettingActivity : BaseActivity() {
             holder.itemView.setOnClickListener {
                 when(bean.key){
                     SettingKey.IMPORT -> {
-
+                        val str = BackupUtils.toJson(
+                                getTableDao().getAllTable(),
+                                getKeyValueDao().getAllKeyValue(),
+                                Database.DATABASE_VERSION
+                        )
+                        BackupUtils.toObject(str) { tableList, keyValueList, version ->
+                            print("Finish")
+                        }
                     }
                     SettingKey.EXPORT -> {
-                        toActivity(ExportActivity::class.java)
+                        log(BackupUtils.toJson(
+                                getTableDao().getAllTable(),
+                                getKeyValueDao().getAllKeyValue(),
+                                Database.DATABASE_VERSION
+                        ))
                     }
                 }
             }

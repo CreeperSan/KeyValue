@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.creepersan.keyvalue">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_app"
@@ -19,12 +22,8 @@
         </activity>
         <activity android:name=".activity.MainActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".activity.TableAddActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.KeyValueAddActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".activity.IconPickActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.RandomGenerateActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.ExportImportActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".activity.SettingActivity" android:screenOrientation="userPortrait"/>
-        <activity android:name=".activity.ExportActivity" android:screenOrientation="userPortrait"/>
         <activity android:name=".activity.AddKeyValueActivity" android:screenOrientation="portrait"/>
     </application>
 

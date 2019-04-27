@@ -169,7 +169,7 @@ class MainActivity : BaseActivity() {
                                 initTableData()
                                 if (mTableID == tableItem.id){
                                     showAsHint()
-                                    mTableID = KeyValueAddActivity.VAL_DEFAULT_INTENT_TABLE_ID
+                                    mTableID = AddKeyValueActivity.DEFAULT_INTENT_TABLE
                                     mainAddFab.hide()
                                     title = getString(R.string.app_name)
                                 }

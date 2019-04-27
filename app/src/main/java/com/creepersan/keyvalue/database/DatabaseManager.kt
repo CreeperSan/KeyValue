@@ -47,68 +47,8 @@ class DatabaseManager() {
         }
         return resultList
     }
-    fun getAllKeyValueList():ArrayList<KeyValuePairOld>{
-        val resultList = ArrayList<KeyValuePairOld>()
-        fastQuery(DBKey.TABLE_KEY_VALUE_PAIR).apply {
-            while(moveToNext()){
-                resultList.add(getKeyValue())
-            }
-            close()
-        }
-        return resultList
-    }
-    fun getAllKeyValueListInTable(tableID:Int):ArrayList<KeyValuePairOld>{
-        val resultList = ArrayList<KeyValuePairOld>()
-        database.query(DBKey.TABLE_KEY_VALUE_PAIR,null,"${DBKey.KEY_KEY_VALUE_PAIR_TABLE} = ?", arrayOf(tableID.toString()),null,null,null).apply {
-            while(moveToNext()){
-                resultList.add(getKeyValue())
-            }
-            close()
-        }
-        return resultList
-    }
 
-    fun insertTable(name:String, type:Int, icon:Int, description:String){
-        database.insert(DBKey.TABLE_TABLE,null,ContentValues().apply {
-            put(DBKey.KEY_TABLE_NAME, name)
-            put(DBKey.KEY_TABLE_TYPE, type)
-            put(DBKey.KEY_TABLE_ICON, icon)
-            put(DBKey.KEY_TABLE_CREATE_TIME, System.currentTimeMillis())
-            put(DBKey.KEY_TABLE_DESCRIPTION, description)
-        })
-    }
 
-    fun insertKeyValue(name:String, type:Int, icon:Int, value:String, table:Int, description:String){
-        database.insert(DBKey.TABLE_KEY_VALUE_PAIR, null, ContentValues().apply {
-            put(DBKey.KEY_KEY_VALUE_PAIR_NAME, name)
-            put(DBKey.KEY_KEY_VALUE_PAIR_TYPE, type)
-            put(DBKey.KEY_KEY_VALUE_PAIR_ICON, icon)
-            put(DBKey.KEY_KEY_VALUE_PAIR_VALUE, value)
-            put(DBKey.KEY_KEY_VALUE_PAIR_TABLE, table)
-            put(DBKey.KEY_KEY_VALUE_PAIR_DESCRIPTION, description)
-            put(DBKey.KEY_KEY_VALUE_PAIR_CREATE_TIME, System.currentTimeMillis())
-        })
-    }
-
-    fun deleteKeyValue(id:Int){
-        database.delete(DBKey.TABLE_KEY_VALUE_PAIR,"${DBKey.KEY_KEY_VALUE_PAIR_ID} = ?", arrayOf(id.toString()))
-    }
-
-    fun deleteTable(id:Int){
-        database.delete(DBKey.TABLE_KEY_VALUE_PAIR, "${DBKey.KEY_KEY_VALUE_PAIR_TABLE} = ?", arrayOf(id.toString()))
-        database.delete(DBKey.TABLE_TABLE, "${DBKey.KEY_TABLE_ID} = ?", arrayOf(id.toString()))
-    }
-
-    fun getJsonData(tableName:String):JSONArray{
-        val jsonArray = JSONArray()
-        val cursor = database.query(DBKey.TABLE_KEY_VALUE_PAIR,null,"${DBKey.KEY_KEY_VALUE_PAIR_TABLE}=?", arrayOf(tableName),null,null,null)
-        while (cursor.moveToNext()){
-            val tmpJson = cursor.getKeyValue().toJson()
-            jsonArray.put(tmpJson)
-        }
-        cursor.close()
-        return jsonArray
-    }
 
 
     /**
@@ -129,18 +69,6 @@ class DatabaseManager() {
                 getInt(3),
                 getLong(4),
                 getString(5)
-        )
-    }
-    private fun Cursor.getKeyValue():KeyValuePairOld{
-        return KeyValuePairOld(
-                getInt(0),
-                getString(1),
-                getInt(2),
-                getInt(3),
-                getString(4),
-                getInt(5),
-                getLong(6),
-                getString(7)
         )
     }
 

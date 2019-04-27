@@ -8,6 +8,7 @@ import android.os.Looper
 import com.creepersan.keyvalue.database.DBKey
 import com.creepersan.keyvalue.database.Database
 import com.creepersan.keyvalue.database.DatabaseManager
+import com.creepersan.keyvalue.util.FileUtils
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -43,6 +44,7 @@ class App : Application() {
         INSTANCE = this
         initDatabase()
         initThreadExecute()
+        FileUtils.initFileFolder()
     }
 
     fun onDestroy(){

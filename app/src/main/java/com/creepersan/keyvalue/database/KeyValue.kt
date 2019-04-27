@@ -3,6 +3,7 @@ package com.creepersan.keyvalue.database
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import org.json.JSONObject
 
 @Entity(tableName = KeyValue.TABLE_NAME)
 class KeyValue {
@@ -41,6 +42,18 @@ class KeyValue {
 
     @ColumnInfo(name = KEY_EXTRA)
     var extra = ""
+
+    fun toJsonObject():JSONObject{
+        val json = JSONObject()
+        json.put(KEY_TITLE, title)
+        json.put(KEY_VALUE, value)
+        json.put(KEY_TABLE, table)
+        json.put(KEY_ICON, icon)
+        json.put(KEY_CREATE_TIME, createTime)
+        json.put(KEY_MODIFY_TIME, modifyTime)
+        json.put(KEY_EXTRA, extra)
+        return json
+    }
 
 
 }

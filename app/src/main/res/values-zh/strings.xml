@@ -13,6 +13,7 @@
 
     <string name="mainTableAdd">添加表</string>
     <string name="mainTableAddHint">点我添加表格</string>
+    <string name="mainDeleteTableHint">您确定要删除这个表吗?</string>
     <string name="mainDeleteKeyValueHint">您确定要删除这个键值对吗?</string>
     <string name="mainSwipeToSelectTable">向右滑动查看信息</string>
 

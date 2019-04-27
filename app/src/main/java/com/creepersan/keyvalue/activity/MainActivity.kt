@@ -112,12 +112,6 @@ class MainActivity : BaseActivity() {
                 putExtra(AddKeyValueActivity.KEY_INTENT_TABLE, mTableID)
             }, REQUEST_CODE_VALUE_EDIT)
         }
-        mainAddFab.setOnLongClickListener {
-            startActivityForResult(Intent(this@MainActivity, KeyValueAddActivity::class.java).apply {
-                putExtra(KeyValueAddActivity.KEY_INTENT_TABLE_ID, mTableID)
-            }, REQUEST_CODE_VALUE_EDIT)
-            return@setOnLongClickListener true
-        }
     }
 
 
@@ -167,9 +161,10 @@ class MainActivity : BaseActivity() {
                     mainDrawerLayout.closeDrawers()
                 }
                 holder.itemView.setOnLongClickListener {
-                    showAlert(message = getString(R.string.mainDeleteKeyValueHint),
+                    showAlert(message = getString(R.string.mainDeleteTableHint),
                             posButton = DialogActionButton(getString(R.string.confirm)) {
-                                getDatabaseManager().deleteTable(tableItem.id)
+                                getTableDao().deleteTable(tableItem)
+                                getKeyValueDao().deleteByTable(tableItem.id)
                                 toast(R.string.operationSuccess)
                                 initTableData()
                                 if (mTableID == tableItem.id){
@@ -218,11 +213,11 @@ class MainActivity : BaseActivity() {
             }
             holder.itemView.setOnLongClickListener {
                 showAlert(message = getString(R.string.mainDeleteKeyValueHint),
-                        posButton = DialogActionButton(getString(R.string.confirm), {
-                            getDatabaseManager().deleteKeyValue(keyValueItem.id)
+                        posButton = DialogActionButton(getString(R.string.confirm)) {
+                            getKeyValueDao().deleteKeyValue(keyValueItem)
                             toast(R.string.operationSuccess)
                             initValueData()
-                        }),
+                        },
                         negButton = DialogActionButton(getString(R.string.cancel),{}))
                 true
             }

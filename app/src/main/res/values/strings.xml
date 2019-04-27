@@ -13,6 +13,7 @@
 
     <string name="mainTableAdd">Add Table</string>
     <string name="mainTableAddHint">Click me to add a table</string>
+    <string name="mainDeleteTableHint">Are tou sure to delete this table?</string>
     <string name="mainDeleteKeyValueHint">Are tou sure to delete this pair?</string>
     <string name="mainSwipeToSelectTable">Swipe right to check info</string>
 

@@ -23,4 +23,7 @@ interface KeyValueDao {
     @Delete
     fun deleteKeyValue(keyValue:KeyValue)
 
+    @Query("DELETE FROM ${KeyValue.TABLE_NAME} WHERE ${KeyValue.KEY_TABLE}=:tableID")
+    fun deleteByTable(tableID:Int)
+
 }

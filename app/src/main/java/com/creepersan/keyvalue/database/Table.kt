@@ -15,6 +15,17 @@ class Table {
         const val KEY_CREATE_TIME = "create_time"
         const val KEY_MODIFY_TIME = "modify_time"
         const val KEY_EXTRA = "extra"
+
+        fun fromJsonObject(json:JSONObject):Table{
+            val table = Table()
+            table.title = json.optString(KEY_TITLE)
+            table.subtitle = json.optString(KEY_SUBTITLE)
+            table.icon = json.optInt(KEY_ICON)
+            table.createTime = json.optLong(KEY_CREATE_TIME)
+            table.modifyTime = json.optLong(KEY_MODIFY_TIME)
+            table.extra = json.optString(KEY_EXTRA)
+            return table
+        }
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -48,5 +59,6 @@ class Table {
         json.put(KEY_EXTRA, extra)
         return json
     }
+
 
 }

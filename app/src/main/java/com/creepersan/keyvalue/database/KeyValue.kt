@@ -17,6 +17,18 @@ class KeyValue {
         const val KEY_CREATE_TIME = "create_time"
         const val KEY_MODIFY_TIME = "modify_time"
         const val KEY_EXTRA = "extra"
+
+        fun fromJsonObject(jsonObject: JSONObject):KeyValue{
+            val keyValue = KeyValue()
+            keyValue.title = jsonObject.optString(KEY_TITLE)
+            keyValue.value = jsonObject.optString(KEY_VALUE)
+            keyValue.table = jsonObject.optInt(KEY_TABLE)
+            keyValue.icon = jsonObject.optInt(KEY_ICON)
+            keyValue.createTime = jsonObject.optLong(KEY_CREATE_TIME)
+            keyValue.modifyTime = jsonObject.optLong(KEY_MODIFY_TIME)
+            keyValue.extra = jsonObject.optString(KEY_EXTRA)
+            return keyValue
+        }
     }
 
     @PrimaryKey(autoGenerate = true)

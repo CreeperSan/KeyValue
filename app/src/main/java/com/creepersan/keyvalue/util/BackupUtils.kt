@@ -6,6 +6,7 @@ import com.creepersan.keyvalue.database.Table
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.io.FileInputStream
 import java.nio.charset.Charset
 import java.util.*
 
@@ -20,8 +21,8 @@ import java.util.*
  *       |- EXT_TYPE (1 byte)       拓展信息类型
  *       |- EXT_LENGTH (2 byte)     拓展信息长度
  *       |- EXT_VALUE (1 byte)      拓展信息值
- *  CONTENT_LENGTH (6 byte)         内容长度
- *  CONTENT (x byte)                内容(base64基础编码，如果有密码，则使用AES-128加密后再用base64编码)
+ *  CONTENT_LENGTH (4 byte)         内容长度
+ *  CONTENT (x byte)                内容(如果有密码，则使用AES-128加密)
  *  FOOTER (5 byte)     尾部标志
  *
  *
@@ -110,7 +111,9 @@ object BackupUtils{
     }
 
     fun writeIntoFile(file: File, content:String, vararg exts:Pair<Byte, ByteArray>){
-        file.delete()
+        if(file.exists()){
+            file.delete()
+        }
         file.createNewFile()
         val outputSteam = file.outputStream()
         // 写 HEADER
@@ -118,9 +121,9 @@ object BackupUtils{
         // 写 EXT
         outputSteam.write(0) // TODO : 这里固定EXT为0
         // 写 CONTENT
-        val contextBase64 = Base64.encode(content.toByteArray(CHARSET), Base64.DEFAULT)
-//        outputSteam.write() // TODO : 写入长度，这里还没实现
-        outputSteam.write(contextBase64)
+        val contextBase64 = content.toByteArray(CHARSET)
+        outputSteam.write(contextBase64.size.to4Byte())
+        outputSteam.write(contextBase64) // TODO : 写入长度，这里还没实现
         // 写 FOOTER
         outputSteam.write(FILE_HEADER)
         // 结束
@@ -128,7 +131,37 @@ object BackupUtils{
         outputSteam.close()
     }
 
-    fun readFromFile(password:String):String{
-        return ""
+    fun readFromFile(file:File, password:String):String{
+        if (!file.exists() || file.isDirectory){
+            return ""
+        }
+        var cache = ByteArray(5){0}
+        val inSteam = file.inputStream()
+        // 读取头部
+        inSteam.read(cache)
+        if (!cache.isSame(FILE_HEADER)){
+            return ""
+        }
+        // 读取Ext
+        cache = ByteArray(1){0}
+        inSteam.read(cache)
+        val extCount = cache[0].toUByte().toInt()
+        for(i in 0 until extCount){
+            cache = ByteArray(1){0}
+            inSteam.read(cache)
+            val extSize = cache[0].toUByte().toInt()
+            for (j in 0 until extSize){
+                cache = ByteArray(extSize){0}
+                inSteam.read(cache)
+            }
+        }
+        // 读取content
+        cache = ByteArray(4){0}
+        inSteam.read(cache)
+        val size = cache.toInt()
+        cache = ByteArray(size){0}
+        inSteam.read(cache)
+        // TODO : 校验Footer
+        return String(cache, CHARSET)
     }
 }

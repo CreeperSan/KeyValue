@@ -18,4 +18,8 @@ object FileUtils {
         }
     }
 
+    fun getNewBackupFile():File{
+        return File("${BACKUP_DIRECTORY.absolutePath}/backup.kvb")
+    }
+
 }

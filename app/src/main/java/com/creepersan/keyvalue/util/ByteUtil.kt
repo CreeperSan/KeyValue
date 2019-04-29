@@ -42,6 +42,18 @@ fun ByteArray.toLong():Long{
     return ByteBuffer.wrap(this).long
 }
 
+fun ByteArray.isSame(target:ByteArray):Boolean{
+    if (this.size != target.size){
+        return false
+    }
+    this.forEachIndexed { index, byte ->
+        if (byte != target[index]){
+            return false
+        }
+    }
+    return true
+}
+
 /**
  * 基础方法
  */

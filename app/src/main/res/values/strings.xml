@@ -67,6 +67,6 @@
 
     <string name="bootToastNoPermissionExiting">没有权限，正在退出</string>
 
-    <string name="settingToastInitFileFolderFail">初始化文件结构失败</string>
+    <string name="settingToastInitFileFolderFail">初始化文件目录失败，请删除根目录下名字为KeyValue的文件或文件夹</string>
     <string name="settingToastFileDecodeError">文件解析错误</string>
 </resources>

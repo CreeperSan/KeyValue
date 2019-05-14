@@ -125,7 +125,7 @@ object BackupUtils{
         outputSteam.write(contextBase64.size.to4Byte())
         outputSteam.write(contextBase64) // TODO : 写入长度，这里还没实现
         // 写 FOOTER
-        outputSteam.write(FILE_HEADER)
+        outputSteam.write(FILE_FOOTER)
         // 结束
         outputSteam.flush()
         outputSteam.close()
@@ -163,5 +163,10 @@ object BackupUtils{
         inSteam.read(cache)
         // TODO : 校验Footer
         return String(cache, CHARSET)
+    }
+
+    fun getBackupFileList():ArrayList<File>{
+        val result = ArrayList<File>()
+        return result
     }
 }

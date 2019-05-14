@@ -99,51 +99,65 @@ class SettingActivity : BaseActivity() {
             holder.itemView.setOnClickListener {
                 when(bean.key){
                     SettingKey.IMPORT -> {////////////////////////////////////////////////////////// 导入
-                        val backupFile = FileUtils.getNewBackupFile()
-                        val jsonStrBack = BackupUtils.readFromFile(backupFile, "")
-                        if (jsonStrBack == ""){
-                            toast(R.string.settingToastFileDecodeError)
-                            return@setOnClickListener
-                        }
-                        val json = JSONObject(jsonStrBack)
-                        // version
-                        val version = json.optInt(BackupUtils.KEY_ROOT_VERSION, 0)
-                        // Table
-                        val tableArray = json.optJSONArray(BackupUtils.KEY_ROOT_TABLE)
-                        val tableList = ArrayList<Table>()
-                        for (i in 0 until tableArray.length()){
-                            val tableJson = tableArray.optJSONObject(i)
-                            val table = Table.fromJsonObject(tableJson)
-                            tableList.add(table)
-                        }
-                        // KeyValye
-                        val keyValueArray = json.optJSONArray(BackupUtils.KEY_ROOT_KEY_VALUE)
-                        val keyValueList = ArrayList<KeyValue>()
-                        for (i in 0 until keyValueArray.length()){
-                            val keyValueJson = keyValueArray.optJSONObject(i)
-                            val keyValue = KeyValue.fromJsonObject(keyValueJson)
-                            keyValueList.add(keyValue)
-                        }
-                        // lambda
-                        toast("Finish")
+                        onImportBackupClick()
+                        return@setOnClickListener
+//                        val backupFile = FileUtils.getNewBackupFile()
+//                        val jsonStrBack = BackupUtils.readFromFile(backupFile, "")
+//                        if (jsonStrBack == ""){
+//                            toast(R.string.settingToastFileDecodeError)
+//                            return@setOnClickListener
+//                        }
+//                        val json = JSONObject(jsonStrBack)
+//                        // version
+//                        val version = json.optInt(BackupUtils.KEY_ROOT_VERSION, 0)
+//                        // Table
+//                        val tableArray = json.optJSONArray(BackupUtils.KEY_ROOT_TABLE)
+//                        val tableList = ArrayList<Table>()
+//                        for (i in 0 until tableArray.length()){
+//                            val tableJson = tableArray.optJSONObject(i)
+//                            val table = Table.fromJsonObject(tableJson)
+//                            tableList.add(table)
+//                        }
+//                        // KeyValye
+//                        val keyValueArray = json.optJSONArray(BackupUtils.KEY_ROOT_KEY_VALUE)
+//                        val keyValueList = ArrayList<KeyValue>()
+//                        for (i in 0 until keyValueArray.length()){
+//                            val keyValueJson = keyValueArray.optJSONObject(i)
+//                            val keyValue = KeyValue.fromJsonObject(keyValueJson)
+//                            keyValueList.add(keyValue)
+//                        }
+//                        // lambda
+//                        toast("Finish")
                     }
                     SettingKey.EXPORT -> {////////////////////////////////////////////////////////// 导出
-                        if (!FileUtils.initFileFolder()){
-                            toast(R.string.settingToastInitFileFolderFail)
-                            return@setOnClickListener
-                        }
-                        BackupUtils.writeIntoFile(
-                                FileUtils.getNewBackupFile(),
-                                BackupUtils.toJson(
-                                        getTableDao().getAllTable(),
-                                        getKeyValueDao().getAllKeyValue(),
-                                        Database.DATABASE_VERSION
-                                )
-                        )
+                        onExportBackupClick()
+                        return@setOnClickListener
+//                        if (!FileUtils.initFileFolder()){
+//                            toast(R.string.settingToastInitFileFolderFail)
+//                            return@setOnClickListener
+//                        }
+//                        BackupUtils.writeIntoFile(
+//                                FileUtils.getNewBackupFile(),
+//                                BackupUtils.toJson(
+//                                        getTableDao().getAllTable(),
+//                                        getKeyValueDao().getAllKeyValue(),
+//                                        Database.DATABASE_VERSION
+//                                )
+//                        )
                     }
                 }
             }
         }
+
+    }
+
+    private fun onExportBackupClick(){
+        if (!FileUtils.initFileFolder()){
+            toast(R.string.settingToastInitFileFolderFail)
+            return
+        }
+    }
+    private fun onImportBackupClick(){
 
     }
 }

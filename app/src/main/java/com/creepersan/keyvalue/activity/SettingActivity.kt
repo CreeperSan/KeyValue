@@ -1,8 +1,11 @@
 package com.creepersan.keyvalue.activity
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.ViewGroup
 import com.creepersan.keyvalue.R
@@ -15,6 +18,7 @@ import com.creepersan.keyvalue.database.Database
 import com.creepersan.keyvalue.database.KeyValue
 import com.creepersan.keyvalue.database.Table
 import com.creepersan.keyvalue.util.BackupUtils
+import com.creepersan.keyvalue.util.DialogBuilder
 import com.creepersan.keyvalue.util.FileUtils
 import com.creepersan.keyvalue.widget.setting.SettingGroupViewHolder
 import com.creepersan.keyvalue.widget.setting.SettingNormalViewHolder
@@ -100,50 +104,9 @@ class SettingActivity : BaseActivity() {
                 when(bean.key){
                     SettingKey.IMPORT -> {////////////////////////////////////////////////////////// 导入
                         onImportBackupClick()
-                        return@setOnClickListener
-//                        val backupFile = FileUtils.getNewBackupFile()
-//                        val jsonStrBack = BackupUtils.readFromFile(backupFile, "")
-//                        if (jsonStrBack == ""){
-//                            toast(R.string.settingToastFileDecodeError)
-//                            return@setOnClickListener
-//                        }
-//                        val json = JSONObject(jsonStrBack)
-//                        // version
-//                        val version = json.optInt(BackupUtils.KEY_ROOT_VERSION, 0)
-//                        // Table
-//                        val tableArray = json.optJSONArray(BackupUtils.KEY_ROOT_TABLE)
-//                        val tableList = ArrayList<Table>()
-//                        for (i in 0 until tableArray.length()){
-//                            val tableJson = tableArray.optJSONObject(i)
-//                            val table = Table.fromJsonObject(tableJson)
-//                            tableList.add(table)
-//                        }
-//                        // KeyValye
-//                        val keyValueArray = json.optJSONArray(BackupUtils.KEY_ROOT_KEY_VALUE)
-//                        val keyValueList = ArrayList<KeyValue>()
-//                        for (i in 0 until keyValueArray.length()){
-//                            val keyValueJson = keyValueArray.optJSONObject(i)
-//                            val keyValue = KeyValue.fromJsonObject(keyValueJson)
-//                            keyValueList.add(keyValue)
-//                        }
-//                        // lambda
-//                        toast("Finish")
                     }
                     SettingKey.EXPORT -> {////////////////////////////////////////////////////////// 导出
                         onExportBackupClick()
-                        return@setOnClickListener
-//                        if (!FileUtils.initFileFolder()){
-//                            toast(R.string.settingToastInitFileFolderFail)
-//                            return@setOnClickListener
-//                        }
-//                        BackupUtils.writeIntoFile(
-//                                FileUtils.getNewBackupFile(),
-//                                BackupUtils.toJson(
-//                                        getTableDao().getAllTable(),
-//                                        getKeyValueDao().getAllKeyValue(),
-//                                        Database.DATABASE_VERSION
-//                                )
-//                        )
                     }
                 }
             }
@@ -156,6 +119,10 @@ class SettingActivity : BaseActivity() {
             toast(R.string.settingToastInitFileFolderFail)
             return
         }
+        val controller = DialogBuilder.createEditTextDialog(this, "请输入备份文件名称", "", "未命名", "确定", { value ->
+            toast("你写的是$value")
+        })
+        controller.show()
     }
     private fun onImportBackupClick(){
 

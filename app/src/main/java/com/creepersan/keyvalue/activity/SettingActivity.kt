@@ -1,11 +1,8 @@
 package com.creepersan.keyvalue.activity
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.ViewGroup
 import com.creepersan.keyvalue.R
@@ -14,17 +11,13 @@ import com.creepersan.keyvalue.bean.setting.BaseSettingItem
 import com.creepersan.keyvalue.bean.setting.SettingGroupBean
 import com.creepersan.keyvalue.bean.setting.SettingKey
 import com.creepersan.keyvalue.bean.setting.SettingNormalBean
-import com.creepersan.keyvalue.database.Database
-import com.creepersan.keyvalue.database.KeyValue
-import com.creepersan.keyvalue.database.Table
-import com.creepersan.keyvalue.util.BackupUtils
 import com.creepersan.keyvalue.util.DialogBuilder
 import com.creepersan.keyvalue.util.FileUtils
 import com.creepersan.keyvalue.widget.setting.SettingGroupViewHolder
 import com.creepersan.keyvalue.widget.setting.SettingNormalViewHolder
 import kotlinx.android.synthetic.main.activity_setting.*
-import org.json.JSONObject
 import java.util.ArrayList
+import java.util.HashMap
 
 class SettingActivity : BaseActivity() {
 
@@ -119,8 +112,23 @@ class SettingActivity : BaseActivity() {
             toast(R.string.settingToastInitFileFolderFail)
             return
         }
-        val controller = DialogBuilder.createEditTextDialog(this, "请输入备份文件名称", "", "未命名", "确定", { value ->
-            toast("你写的是$value")
+        val controller = DialogBuilder.createEditTextDialog(this, "请输入备份文件名称", "", "未命名", "确定", { value -> // 输入备份文件名
+            if(FileUtils.isBackupFileExist(value)){
+                toast("备份文件已经存在，请使用其他名称")
+                return@createEditTextDialog
+            }
+            val loadingDialogController = DialogBuilder.createLoadingDialog(this, "正在创建备份", "正在检查环境", false)
+            loadingDialogController.show()
+
+            val extMap = HashMap<Byte, ByteArray>()
+            extMap.put(FileUtils.BACKUP_EXT_VERSION, FileUtils.BACKUP_EXT_VERSION_01)
+
+            FileUtils.writeBackupFile(value, extMap, getTableDao().getAllTable(), getKeyValueDao().getAllKeyValue(), { result, hint -> runOnUiThread {
+                toast(hint)
+                loadingDialogController.cancel()
+            }}, { stepHint ->  runOnUiThread {
+                loadingDialogController.setHint(stepHint)
+            } })
         })
         controller.show()
     }

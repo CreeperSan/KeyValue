@@ -3,7 +3,7 @@ package com.creepersan.keyvalue.database
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import org.json.JSONObject
+import com.alibaba.fastjson.JSONObject
 
 @Entity(tableName = KeyValue.TABLE_NAME)
 class KeyValue {
@@ -18,14 +18,18 @@ class KeyValue {
         const val KEY_MODIFY_TIME = "modify_time"
         const val KEY_EXTRA = "extra"
 
+        private fun JSONObject.optString(key:String):String{
+            return this.getString(key) ?: ""
+        }
+
         fun fromJsonObject(jsonObject: JSONObject):KeyValue{
             val keyValue = KeyValue()
             keyValue.title = jsonObject.optString(KEY_TITLE)
             keyValue.value = jsonObject.optString(KEY_VALUE)
-            keyValue.table = jsonObject.optInt(KEY_TABLE)
-            keyValue.icon = jsonObject.optInt(KEY_ICON)
-            keyValue.createTime = jsonObject.optLong(KEY_CREATE_TIME)
-            keyValue.modifyTime = jsonObject.optLong(KEY_MODIFY_TIME)
+            keyValue.table = jsonObject.getIntValue(KEY_TABLE)
+            keyValue.icon = jsonObject.getIntValue(KEY_ICON)
+            keyValue.createTime = jsonObject.getLongValue(KEY_CREATE_TIME)
+            keyValue.modifyTime = jsonObject.getLongValue(KEY_MODIFY_TIME)
             keyValue.extra = jsonObject.optString(KEY_EXTRA)
             return keyValue
         }

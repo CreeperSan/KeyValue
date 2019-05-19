@@ -3,13 +3,11 @@ package com.creepersan.keyvalue.util
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.creepersan.keyvalue.R
-import java.lang.Exception
-import java.util.ArrayList
 
 object DialogBuilder {
 
@@ -52,6 +50,26 @@ object DialogBuilder {
         }
     }
 
+    fun createLoadingDialog(context:Context, title:String="", hintStr:String="", cancelable:Boolean=false):LoadingDialogController{
+        val builder = AlertDialog.Builder(context)
+        val rootView = context.getLayoutInflater().inflate(R.layout.dialog_builder_loading, null)
+        val progressBar = rootView.findViewById<ProgressBar>(R.id.dialogBuilderLoadingProgressBar)
+        val textView = rootView.findViewById<TextView>(R.id.dialogBuilderLoadingHintText)
+        if (title.isNotEmpty()){
+            builder.setTitle(title)
+        }
+        builder.setView(rootView)
+        builder.setCancelable(cancelable)
+        val dialog = builder.create()
+        return object : LoadingDialogController(dialog){
+            override fun setHint(value: String) {
+                textView.text = value
+            }
+        }
+    }
+
+
+
     abstract class BaseDialogController(private val dialog:Dialog){
         open fun cancel(){
             dialog.cancel()
@@ -66,11 +84,18 @@ object DialogBuilder {
             return dialog.hide()
         }
     }
-
     abstract class EditTextDialogController(dialog: Dialog):BaseDialogController(dialog){
          abstract fun setHint(hint:String)
          abstract fun setValue(value:String)
          abstract fun getValue():String
+    }
+    abstract class LoadingDialogController(dialog: Dialog):BaseDialogController(dialog){
+        abstract fun setHint(value:String)
+    }
+
+
+    private fun Context.getLayoutInflater():LayoutInflater{
+        return LayoutInflater.from(this)
     }
 
 }

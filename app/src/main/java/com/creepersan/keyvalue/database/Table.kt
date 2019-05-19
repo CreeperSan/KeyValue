@@ -3,7 +3,8 @@ package com.creepersan.keyvalue.database
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import org.json.JSONObject
+import com.alibaba.fastjson.JSONObject
+
 
 @Entity(tableName = Table.TABLE_NAME)
 class Table {
@@ -16,13 +17,17 @@ class Table {
         const val KEY_MODIFY_TIME = "modify_time"
         const val KEY_EXTRA = "extra"
 
+        private fun JSONObject.optString(key:String):String{
+            return this.getString(key) ?: ""
+        }
+
         fun fromJsonObject(json:JSONObject):Table{
             val table = Table()
             table.title = json.optString(KEY_TITLE)
             table.subtitle = json.optString(KEY_SUBTITLE)
-            table.icon = json.optInt(KEY_ICON)
-            table.createTime = json.optLong(KEY_CREATE_TIME)
-            table.modifyTime = json.optLong(KEY_MODIFY_TIME)
+            table.icon = json.getIntValue(KEY_ICON)
+            table.createTime = json.getLongValue(KEY_CREATE_TIME)
+            table.modifyTime = json.getLongValue(KEY_MODIFY_TIME)
             table.extra = json.optString(KEY_EXTRA)
             return table
         }
@@ -49,7 +54,7 @@ class Table {
     @ColumnInfo(name = KEY_EXTRA)
     var extra = ""
 
-    fun toJsonObject():JSONObject{
+    fun toJsonObject(): JSONObject {
         val json = JSONObject()
         json.put(KEY_TITLE, title)
         json.put(KEY_SUBTITLE, subtitle)
@@ -59,6 +64,5 @@ class Table {
         json.put(KEY_EXTRA, extra)
         return json
     }
-
 
 }

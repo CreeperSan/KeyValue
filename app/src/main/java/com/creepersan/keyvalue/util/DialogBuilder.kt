@@ -3,11 +3,16 @@ package com.creepersan.keyvalue.util
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.creepersan.keyvalue.R
+import java.util.ArrayList
 
 object DialogBuilder {
 
@@ -68,6 +73,65 @@ object DialogBuilder {
         }
     }
 
+    fun createMultiStringListDialog(context: Context, title: String="", dataList:ArrayList<String>, selectCallback:((index:Int, value:String)->Unit)?=null): MultiStringSelectController {
+        val builde = AlertDialog.Builder(context)
+        if (title.isNotEmpty()){
+            builde.setTitle(title)
+        }
+
+        val view = context.getLayoutInflater().inflate(R.layout.dialog_builder_multi_string_select, null)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.dialogBuilderMultiStringList)
+
+        builde.setView(view)
+
+        val dialog = builde.create()
+
+
+
+        class TextViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+            private val textView = itemView as TextView
+
+            fun setText(title:String){
+                textView.text = title
+            }
+
+            fun setOnClicklistner(listener:View.OnClickListener){
+                textView.setOnClickListener(listener)
+            }
+
+        }
+        class TextViewAdapter : RecyclerView.Adapter<TextViewHolder>(){
+            override fun onCreateViewHolder(p0: ViewGroup, p1: Int): TextViewHolder {
+                return TextViewHolder(context.getLayoutInflater().inflate(R.layout.item_dialog_builder_multi_string_select, p0, false))
+            }
+
+            override fun getItemCount(): Int {
+                return dataList.size
+            }
+
+            override fun onBindViewHolder(holder: TextViewHolder, pos: Int) {
+                val item = dataList[pos]
+                holder.setText(item)
+                holder.setOnClicklistner(View.OnClickListener {
+                    selectCallback?.invoke(pos, item)
+                    dialog.dismiss()
+                })
+            }
+
+        }
+
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = TextViewAdapter()
+
+
+        return object : MultiStringSelectController(dialog){
+            override fun refreshList() {
+                recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
+    }
+
 
 
     abstract class BaseDialogController(private val dialog:Dialog){
@@ -91,6 +155,9 @@ object DialogBuilder {
     }
     abstract class LoadingDialogController(dialog: Dialog):BaseDialogController(dialog){
         abstract fun setHint(value:String)
+    }
+    abstract class MultiStringSelectController(dialog: Dialog):BaseDialogController(dialog){
+        abstract fun refreshList();
     }
 
 

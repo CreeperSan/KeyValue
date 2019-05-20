@@ -7,6 +7,7 @@ import com.creepersan.keyvalue.database.KeyValue
 import com.creepersan.keyvalue.database.Table
 import java.io.File
 import java.lang.Exception
+import java.util.ArrayList
 import java.util.HashMap
 
 /**
@@ -77,6 +78,18 @@ object FileUtils {
         return false
     }
 
+    fun getBackupFileNamelist():ArrayList<String>{
+        val nameList = ArrayList<String>()
+        BACKUP_DIRECTORY.listFiles().forEach { file ->
+            val fileName = file.name
+            val postfix = ".$POSTFIX"
+            if (fileName.endsWith(postfix)){
+                nameList.add(fileName.substring(0, fileName.lastIndexOf(postfix)))
+            }
+        }
+        return nameList
+    }
+
     fun writeBackupFile(fileName:String, extMap:HashMap<Byte, ByteArray>, tableList:List<Table>, keyValueList:List<KeyValue>, resultCallback:((result:Boolean, hint:String)->Unit)?=null, stepCallback:((hint:String)->Unit)?=null){
         val file = File("${BACKUP_DIRECTORY.absolutePath}/$fileName.$POSTFIX")
         if (file.exists()){
@@ -129,6 +142,8 @@ object FileUtils {
             }
         }.start()
     }
+
+
 
     fun readBackupFile(fileName:String){
 

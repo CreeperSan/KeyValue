@@ -133,6 +133,14 @@ class SettingActivity : BaseActivity() {
         controller.show()
     }
     private fun onImportBackupClick(){
-
+        val fileNameList = FileUtils.getBackupFileNamelist()
+        if(fileNameList.isEmpty()){
+            toast("目录下没有备份文件哦")
+            return
+        }
+        val dialogController = DialogBuilder.createMultiStringListDialog(this, "请选择备份文件", fileNameList) { index, value ->
+            toast("Click $value")
+        }
+        dialogController.show()
     }
 }

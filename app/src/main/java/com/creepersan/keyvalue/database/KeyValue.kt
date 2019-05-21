@@ -31,6 +31,7 @@ class KeyValue {
             keyValue.createTime = jsonObject.getLongValue(KEY_CREATE_TIME)
             keyValue.modifyTime = jsonObject.getLongValue(KEY_MODIFY_TIME)
             keyValue.extra = jsonObject.optString(KEY_EXTRA)
+            keyValue.id = jsonObject.getIntValue(KEY_ID)
             return keyValue
         }
     }
@@ -68,6 +69,7 @@ class KeyValue {
         json.put(KEY_CREATE_TIME, createTime)
         json.put(KEY_MODIFY_TIME, modifyTime)
         json.put(KEY_EXTRA, extra)
+        json.put(KEY_ID, id)
         return json
     }
 

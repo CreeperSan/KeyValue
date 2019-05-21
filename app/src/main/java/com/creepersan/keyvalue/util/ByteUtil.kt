@@ -1,5 +1,6 @@
 package com.creepersan.keyvalue.util
 
+import java.io.InputStream
 import java.nio.ByteBuffer
 
 fun byte(int:Int):Byte{
@@ -35,7 +36,9 @@ fun Long.to8Byte():ByteArray{
 }
 
 fun ByteArray.toInt():Int{
-    return ByteBuffer.wrap(this).int
+    return ByteBuffer
+            .wrap(this)
+            .int
 }
 
 fun ByteArray.toLong():Long{
@@ -52,6 +55,16 @@ fun ByteArray.isSame(target:ByteArray):Boolean{
         }
     }
     return true
+}
+
+/**
+ * 从FileInputSteam中读取指定长度的字节数
+ */
+
+fun InputStream.readByteArray(length:Int):ByteArray{
+    val byteArray = ByteArray(length)
+    this.read(byteArray)
+    return byteArray
 }
 
 /**

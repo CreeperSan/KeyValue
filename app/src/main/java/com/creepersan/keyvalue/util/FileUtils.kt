@@ -2,10 +2,12 @@ package com.creepersan.keyvalue.util
 
 import android.os.Environment
 import com.alibaba.fastjson.JSONArray
+import com.alibaba.fastjson.JSONException
 import com.alibaba.fastjson.JSONObject
 import com.creepersan.keyvalue.database.KeyValue
 import com.creepersan.keyvalue.database.Table
 import java.io.File
+import java.io.InputStream
 import java.lang.Exception
 import java.util.ArrayList
 import java.util.HashMap
@@ -122,7 +124,7 @@ object FileUtils {
                 json.put(BACKUP_JSON_ROOT_TABLE, jsonTable)
                 val keyValueJson = JSONArray()
                 keyValueList.forEach {  keyValue ->
-                    keyValueJson.add(keyValue)
+                    keyValueJson.add(keyValue.toJsonObject())
                 }
                 json.put(BACKUP_JSON_ROOT_KEY_VALUE, keyValueJson)
                 // 写内容长度
@@ -145,8 +147,75 @@ object FileUtils {
 
 
 
-    fun readBackupFile(fileName:String){
-
+    fun readBackupFile(fileName:String, resultCallback:((result:Boolean, reason:String)->Unit), dataCallback:(tableList:ArrayList<Table>, keyValueList:ArrayList<KeyValue>)->Unit,stepCallback:((hint:String)->Unit)?=null){
+        val file = File("${BACKUP_DIRECTORY.absolutePath}/$fileName.$POSTFIX")
+        if (!file.exists()){
+            resultCallback.invoke(false, "备份文件不存在")
+        }
+        Thread{
+            var inSteam : InputStream? = null
+            try {
+                inSteam = file.inputStream()
+                stepCallback?.invoke("正在检查文件头部信息")
+                if (!inSteam.readByteArray(BACKUP_HEADER.size).isSame(BACKUP_HEADER)){
+                    resultCallback.invoke(false, "文件不合法，格式对比不通过")
+                    return@Thread
+                }
+                stepCallback?.invoke("正在检查文件拓展信息")
+                val extCount = inSteam.readByteArray(1)[0]
+                if (extCount < 0){
+                    resultCallback.invoke(false, "文件不合法，拓展信息数量错误")
+                    return@Thread
+                }else if (extCount > 0){
+                    for (i in 0 until extCount){
+                        val extType = inSteam.read()
+                        val lengthByteArray = inSteam.readByteArray(2)
+                        val extLength = (lengthByteArray[1].toUInt() + lengthByteArray[0].toUInt()*256.toUInt()).toInt()
+                        val extData = inSteam.readByteArray(extLength)
+                    }
+                }
+                stepCallback?.invoke("正在检查文件总长信息")
+                val contentLength = inSteam.readByteArray(4).toInt()
+                if (contentLength < 0){
+                    resultCallback.invoke(false, "文件不合法，数据长度错误")
+                    return@Thread
+                }
+                stepCallback?.invoke("正在检查文件内容")
+                val data = inSteam.readByteArray(contentLength).toString(BACKUP_CHARSET)
+                val keyValueList = ArrayList<KeyValue>()
+                val tableList = ArrayList<Table>()
+                try {
+                    stepCallback?.invoke("正在校验文件内容")
+                    val json = JSONObject.parseObject(data)
+                    val tableJson = json.getJSONArray(BACKUP_JSON_ROOT_TABLE)
+                    tableJson.forEach {  tmpTableJson ->
+                        val tableJsonObject = tmpTableJson as JSONObject
+                        tableList.add(Table.fromJsonObject(tableJsonObject))
+                    }
+                    val keyValueJson = json.getJSONArray(BACKUP_JSON_ROOT_KEY_VALUE)
+                    keyValueJson.forEach {  tmpKeyValueJson ->
+                        val keyValueJsonObject = tmpKeyValueJson as JSONObject
+                        keyValueList.add(KeyValue.fromJsonObject(keyValueJsonObject))
+                    }
+                }catch (e:JSONException){
+                    e.printStackTrace()
+                    resultCallback.invoke(false, "数据解析出错")
+                }
+                stepCallback?.invoke("正在完成校验")
+                if (!inSteam.readByteArray(5).isSame(BACKUP_FOOTER)){
+                    resultCallback.invoke(false, "文件不合法，格式对比失败，文件可能已经损坏")
+                    return@Thread
+                }
+                stepCallback?.invoke("读取完毕")
+                dataCallback.invoke(tableList, keyValueList)
+                resultCallback.invoke(true, "已恢复备份")
+            }catch (e:Exception){
+                resultCallback.invoke(false, "恢复备份出错")
+                e.printStackTrace()
+            }finally {
+                inSteam?.close()
+            }
+        }.start()
     }
 
 }

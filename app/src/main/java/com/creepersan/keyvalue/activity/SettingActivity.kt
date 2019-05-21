@@ -138,8 +138,36 @@ class SettingActivity : BaseActivity() {
             toast("目录下没有备份文件哦")
             return
         }
-        val dialogController = DialogBuilder.createMultiStringListDialog(this, "请选择备份文件", fileNameList) { index, value ->
-            toast("Click $value")
+        val dialogController = DialogBuilder.createMultiStringListDialog(this, "请选择备份文件", fileNameList) { _, value ->
+            if (!FileUtils.isBackupFileExist(value)){
+                toast("备份文件不存在")
+                return@createMultiStringListDialog
+            }
+            val progressDialogController = DialogBuilder.createLoadingDialog(this, "正在恢复备份", "准备中...", false)
+            progressDialogController.show()
+            FileUtils.readBackupFile(value, { _, reason -> runOnUiThread {  // 结果回调
+                toast(reason)
+                progressDialogController.hide()
+            } }, { tableList, keyValueList ->  // 数据回调
+                // 清除并写入表
+                val tableDao = getTableDao()
+                tableDao.getAllTable().forEach {  table ->
+                    tableDao.deleteTable(table)
+                }
+                tableList.forEach { table ->
+                    tableDao.insertTable(table)
+                }
+                // 清除并写入键值对
+                val keyValueDao = getKeyValueDao()
+                keyValueDao.getAllKeyValue().forEach{ keyValue ->
+                    keyValueDao.deleteKeyValue(keyValue)
+                }
+                keyValueList.forEach { keyValue ->
+                    keyValueDao.insertKeyValue(keyValue)
+                }
+            }, { hint -> runOnUiThread { // 进度回调
+                progressDialogController.setHint(hint)
+            } })
         }
         dialogController.show()
     }

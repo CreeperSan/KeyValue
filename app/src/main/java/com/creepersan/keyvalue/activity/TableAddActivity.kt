@@ -40,7 +40,7 @@ class TableAddActivity : BaseActivity() {
             val nameStr = tableAddName.text.toString().trim()
             val description = tableAddDescription.text.toString().trim()
 
-            if (!FormatCheckUtil.checkEdittext(nameStr,minLength = 1)){
+            if (!FormatCheckUtil.checkEditText(nameStr,minLength = 1)){
                 toast(R.string.tableAddNameTooShortHint)
                 return@setOnClickListener
             }

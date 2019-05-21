@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject
 class Table {
     companion object{
         const val TABLE_NAME = "KeyValueTable"
+        const val KEY_ID = "id"
         const val KEY_TITLE = "title"
         const val KEY_SUBTITLE = "subtitle"
         const val KEY_ICON = "icon"
@@ -29,6 +30,7 @@ class Table {
             table.createTime = json.getLongValue(KEY_CREATE_TIME)
             table.modifyTime = json.getLongValue(KEY_MODIFY_TIME)
             table.extra = json.optString(KEY_EXTRA)
+            table.id = json.getIntValue(KEY_ID)
             return table
         }
     }
@@ -62,6 +64,7 @@ class Table {
         json.put(KEY_CREATE_TIME, createTime)
         json.put(KEY_MODIFY_TIME, modifyTime)
         json.put(KEY_EXTRA, extra)
+        json.put(KEY_ID, id)
         return json
     }
 

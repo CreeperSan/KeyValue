@@ -64,6 +64,7 @@
     <string name="addKeyValueAddValueTitleToastMissingTableID">表ID丢失</string>
     <string name="addKeyValueDialogPosButton">确定</string>
     <string name="addKeyValueDialogNegButton">关闭</string>
+    <string name="addKeyValueToastContentCopied">内容已複製</string>
 
     <string name="bootToastNoPermissionExiting">没有权限，正在退出</string>
 

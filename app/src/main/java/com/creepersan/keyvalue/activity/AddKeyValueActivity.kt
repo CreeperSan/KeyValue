@@ -15,6 +15,7 @@ import com.creepersan.keyvalue.R
 import com.creepersan.keyvalue.base.BaseActivity
 import com.creepersan.keyvalue.base.toString
 import com.creepersan.keyvalue.database.KeyValue
+import com.creepersan.keyvalue.util.ClipBoardUtils
 import kotlinx.android.synthetic.main.activity_add_key_value.*
 import org.json.JSONObject
 import java.lang.Exception
@@ -293,6 +294,10 @@ class AddKeyValueActivity : BaseActivity() {
                         }
                         mEditTextDialog.showDialog()
                     })
+                    holder.setOnTextLongClickListener { content ->
+                        ClipBoardUtils.copyText(this@AddKeyValueActivity, content)
+                        toast(R.string.addKeyValueToastContentCopied)
+                    }
                 }
                 is ButtonBean -> {
                     val holder = tmpHolder as ButtonViewHolder
@@ -310,6 +315,10 @@ class AddKeyValueActivity : BaseActivity() {
                         }
                         mEditTextDialog.showDialog()
                     })
+                    holder.setOnLongClickListener { content ->
+                        ClipBoardUtils.copyText(this@AddKeyValueActivity, content)
+                        toast(R.string.addKeyValueToastContentCopied)
+                    }
                 }
             }
         }
@@ -360,6 +369,17 @@ class AddKeyValueActivity : BaseActivity() {
             valueTextView.setOnClickListener(listener)
         }
 
+        fun setOnTextLongClickListener(listener:(content:String)->Unit){
+            keyTextView.setOnLongClickListener {
+                listener.invoke(numTextView.text.trim().toString())
+                true
+            }
+            valueTextView.setOnLongClickListener {
+                listener.invoke(valueTextView.text.trim().toString())
+                true
+            }
+        }
+
     }
     private inner class TitleHolder(itemView:View) : RecyclerView.ViewHolder(itemView){
         val contentTextView = itemView.findViewById<TextView>(R.id.itemAddKeyValueItemTitle)
@@ -370,6 +390,13 @@ class AddKeyValueActivity : BaseActivity() {
 
         fun setOnClickListener(listener: View.OnClickListener){
             contentTextView.setOnClickListener(listener)
+        }
+
+        fun setOnLongClickListener(listener:(content:String)->Unit){
+            contentTextView.setOnLongClickListener{
+                listener.invoke(contentTextView.text.trim().toString())
+                true
+            }
         }
     }
 }

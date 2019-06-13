@@ -2,9 +2,12 @@ package com.creepersan.keyvalue.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +43,8 @@ class AddKeyValueActivity : BaseActivity() {
     private var mTable = 0
     private var mID = DEFAULT_INTENT_KEY_VALUE_ID // 用于标志是编辑还是添加
     private lateinit var mKeyValue : KeyValue
+    private var mIsChangeContent = false
+    private var mUnsaveEditDialog : Dialog? = null
 
     override val layoutID: Int = R.layout.activity_add_key_value
 
@@ -111,16 +116,13 @@ class AddKeyValueActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             android.R.id.home -> {
-                finish()
+                onBackPressed()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     /* 属性判断 */
-    private fun isEdit():Boolean{
-        return mID != DEFAULT_INTENT_KEY_VALUE_ID
-    }
     private fun isAdd():Boolean{
         return mID == DEFAULT_INTENT_KEY_VALUE_ID
     }
@@ -186,6 +188,31 @@ class AddKeyValueActivity : BaseActivity() {
         finish()
     }
 
+    override fun onBackPressed() {
+        if (mIsChangeContent){
+            getUnsavedAlertDialog().show()
+        }else{
+            super.onBackPressed()
+        }
+    }
+
+    /* Get Some Resources */
+    private fun getUnsavedAlertDialog():Dialog{
+        if(mUnsaveEditDialog == null){
+            mUnsaveEditDialog = AlertDialog.Builder(this)
+                    .setTitle(R.string.addKeyValueUnsavedDialogTitle.toString(this))
+                    .setMessage(R.string.addKeyValueUnsavedDialogContent.toString(this))
+                    .setPositiveButton(R.string.addKeyValueDialogPosButton.toString(this)){ _, _ ->
+                        finish()
+                    }
+                    .setNegativeButton(R.string.addKeyValueDialogThinkMoreButton.toString(this)){ _, _ ->
+                        mUnsaveEditDialog?.hide()
+                    }
+                    .create()
+        }
+        return mUnsaveEditDialog!!
+    }
+
     /* Exception */
     private class UnsupportedViewHolderException : Exception()
 
@@ -207,12 +234,14 @@ class AddKeyValueActivity : BaseActivity() {
             val dialog = AlertDialog.Builder(context)
                     .setView(editText)
                     .setPositiveButton(R.string.addKeyValueDialogPosButton.toString(context)) { _, _ ->
+                        mIsChangeContent = true
                         onDialogConfirmListener?.invoke(editText.text.toString())
                     }
                     .setNegativeButton(R.string.addKeyValueDialogNegButton.toString(context), null)
                     .setOnDismissListener {
                         onDialogConfirmListener = null
                     }
+                    .setCancelable(false)
                     .create()
 
             return@lazy object{
@@ -230,10 +259,6 @@ class AddKeyValueActivity : BaseActivity() {
 
                 fun showDialog(){
                     dialog.show()
-                }
-
-                fun hideDialog(){
-                    dialog.dismiss()
                 }
             }
         }

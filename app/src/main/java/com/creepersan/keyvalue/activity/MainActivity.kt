@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         initTableListView()
         initValueListView()
-
+        initActionBar()
         initTableData()
         initFloatButton()
     }
@@ -79,7 +80,16 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            R.id.menuMainSetting -> { toActivity(SettingActivity::class.java) }
+            android.R.id.home -> {
+                if (mainDrawerLayout.isDrawerOpen(Gravity.START)){
+                    mainDrawerLayout.closeDrawer(Gravity.START)
+                }else{
+                    mainDrawerLayout.openDrawer(Gravity.START)
+                }
+            }
+            R.id.menuMainSetting -> {
+                toActivity(SettingActivity::class.java)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -88,6 +98,11 @@ class MainActivity : BaseActivity() {
      *  Init
      */
 
+    private fun initActionBar(){
+        val bar = supportActionBar ?: return
+        bar.setDisplayHomeAsUpEnabled(true)
+        bar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+    }
     private fun initTableListView(){
         mainTableList.layoutManager = LinearLayoutManager(this)
         mainTableList.adapter = mTableAdapter

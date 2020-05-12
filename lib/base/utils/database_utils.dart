@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sql.dart';
+import 'dart:convert';
+import 'package:keyvalue/model/table_model.dart';
 
 class DatabaseUtils{
 
@@ -34,14 +36,81 @@ class DatabaseUtils{
   }
 
   void initDatabaseTables() async {
-    // TODO 尚未完成
-//    await db.execute('CREATE TABLE ${ConstDatabaseKeyValue.TABLE_NAME} IF NOT EXISTS('
-//        ''
-//    ')');
+    // 初始化表
+    await db.execute('create table if not exists ${ConstDatabaseTable.TABLE_NAME} (' +
+        '${ConstDatabaseTable.KEY_ID} integer not null primary key autoincrement,' +
+        '${ConstDatabaseTable.KEY_NAME} text not null,' +
+        '${ConstDatabaseTable.KEY_AUTH} integer default 0,' +
+        '${ConstDatabaseTable.KEY_COLOR} text,' +
+        '${ConstDatabaseTable.KEY_CREATE_TIME} datetime default CURRENT_TIMESTAMP,' +
+        '${ConstDatabaseTable.KEY_MODIFY_TIME} datetime default CURRENT_TIMESTAMP,' +
+        '${ConstDatabaseTable.KEY_INFO} text' +
+    ')');
+    // 初始化键值对
+    await db.execute('create table if not exists ${ConstDatabaseKeyValue.TABLE_NAME} (' +
+        '${ConstDatabaseKeyValue.KEY_ID} integer not null primary key autoincrement,' +
+        '${ConstDatabaseKeyValue.KEY_TABLE_ID} integer not null,' +
+        '${ConstDatabaseKeyValue.KEY_CONTENT} text not null' +
+    ')');
   }
 
   void deInit(){
     db.close();
+  }
+
+  void createTable(
+      String name,
+      int auth, {
+      int iconColor = 0xff999999,
+      int backgroundColor = 0xffFFFFFF,
+      String description = ''
+  }) async {
+    const colorJson = {};
+    colorJson[ConstDatabaseTable.COLOR_ICON] = iconColor;
+    colorJson[ConstDatabaseTable.COLOR_BACKGROUND] = iconColor;
+    const extraJson = {};
+    extraJson[ConstDatabaseTable.EXTRA_DESCRIPTION] = description;
+
+    db.execute('insert into ${ConstDatabaseTable.TABLE_NAME} (' +
+          '${ConstDatabaseTable.KEY_NAME},'+
+          '${ConstDatabaseTable.KEY_AUTH},'+
+          '${ConstDatabaseTable.KEY_COLOR},'+
+          '${ConstDatabaseTable.KEY_CREATE_TIME},'+
+          '${ConstDatabaseTable.KEY_MODIFY_TIME},'+
+          '${ConstDatabaseTable.KEY_INFO}' +
+        ') values (' +
+          '$name,'+
+          '$auth,'+
+          '\'${jsonEncode(colorJson).toString()}\','+
+          'now(),'+
+          'now(),'+
+          '\'${jsonEncode(extraJson).toString()}"\''+
+        ')');
+  }
+
+  Future<List<TableModel>> queryAllTables() async {
+    List<Map> queryResult = await db.rawQuery('select * from ${ConstDatabaseTable.TABLE_NAME}');
+    List<TableModel> returnList = [];
+    for(Map map in queryResult){
+      TableModel model = TableModel('');
+      returnList.add(model);
+    }
+    return returnList;
+  }
+
+
+
+  void createKeyValue(
+    int tableID,
+    String content
+  ) async {
+    await db.execute('insert into ${ConstDatabaseKeyValue.TABLE_NAME} (' +
+      '${ConstDatabaseKeyValue.KEY_TABLE_ID},' +
+      '${ConstDatabaseKeyValue.KEY_CONTENT}' +
+    ') values {' +
+      '$tableID,' +
+      '$content' +
+    '}');
   }
 
 }
@@ -56,15 +125,20 @@ class ConstDatabaseTable{
   // modify_time 修改时间
   // info 其他信息(JSON格式)
 
-  static const TABLE_NAME = 'table';
+  static const TABLE_NAME = 'table_info';
 
   static const KEY_ID = '_id';
-  static const KEY_TITLE = 'title';
+  static const KEY_NAME = 'name';
   static const KEY_AUTH = 'auth';
   static const KEY_COLOR = 'color';
   static const KEY_CREATE_TIME = 'create_time';
   static const KEY_MODIFY_TIME = 'modify_time';
   static const KEY_INFO = 'info';
+
+  static const COLOR_ICON = 'icon';
+  static const COLOR_BACKGROUND = 'bg';
+
+  static const EXTRA_DESCRIPTION = 'description';
 }
 
 // 一条一条数据
@@ -73,7 +147,7 @@ class ConstDatabaseKeyValue{
   // table_id 表的id
   // content 加密后的数据
 
-  static const TABLE_NAME = 'key_value';
+  static const TABLE_NAME = 'key_value_info';
 
   static const KEY_ID = '_id';
   static const KEY_TABLE_ID = 'table_id';

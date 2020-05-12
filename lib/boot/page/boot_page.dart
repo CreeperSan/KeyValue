@@ -54,7 +54,7 @@ class BootState extends BaseState{
     await TimeUtil.delay(0);
     // 关闭现有界面进入主界面
     NavigationUtil.finishCurrentPage(context);
-    NavigationUtil.toStatefulPage(context, TablePage());
+    NavigationUtil.toStatefulPage(context, IndexPage());
   }
 
 

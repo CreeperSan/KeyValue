@@ -2,15 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:keyvalue/base/widget/base_stateful_widget.dart';
 
 class StatusHintWidget extends BaseStatefulWidget{
-  
+  String hintString = '';
+  String buttonString = '';
+  bool showButton = true;
+  void Function() onButtonClick;
+  IconData icon = Icons.info_outline;
+
+  StatusHintWidget({
+    this.hintString = '加载中',
+    this.buttonString = '取消',
+    this.showButton = true,
+    this.icon = Icons.info_outline,
+    this.onButtonClick,
+  });
+
   @override
-  State<StatefulWidget> createState() {
+  State<StatusHintWidget> createState() {
     return _StatusHintState();
   }
   
 }
 
-class _StatusHintState extends BaseStatefulState with TickerProviderStateMixin{
+class _StatusHintState extends State<StatusHintWidget> with TickerProviderStateMixin{
   AnimationController _animationController;
 
   @override
@@ -31,7 +44,7 @@ class _StatusHintState extends BaseStatefulState with TickerProviderStateMixin{
             padding: EdgeInsets.only(),
             child: RotationTransition(
               turns: _animationController,
-              child: Icon(Icons.refresh,
+              child: Icon(widget.icon,
                 size: 82,
               ),
             ),
@@ -40,19 +53,25 @@ class _StatusHintState extends BaseStatefulState with TickerProviderStateMixin{
             padding: EdgeInsets.only(
               top: 12
             ),
-            child: Text('加载中',),
+            child: Text(widget.hintString,),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              top: 12
-            ),
-            child: RaisedButton(
-              child: Text('重新加载'),
-              onPressed: (){
-                print('retry');
-                _animationController.reset();
-                _animationController.forward();
-              },
+          Offstage(
+            offstage: !widget.showButton,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 12
+              ),
+              child: RaisedButton(
+                child: Text('重新加载'),
+                onPressed: (){
+                  // 执行动作
+                  if(widget.onButtonClick != null){
+                    widget.onButtonClick();
+                  }
+                  _animationController.reset();
+                  _animationController.forward();
+                },
+              ),
             ),
           )
         ],

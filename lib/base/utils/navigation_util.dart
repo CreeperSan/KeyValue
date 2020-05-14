@@ -4,12 +4,8 @@ import 'package:keyvalue/base/page/base_stateless_page.dart';
 
 class NavigationUtil{
 
-  static void finishCurrentPage(BuildContext context){
-    Navigator.pop(context);
-  }
-
-  static void toStatefulPage(BuildContext context, StatefulWidget page){
-    Navigator.push(
+  static Future<dynamic> startStatefulPage(BuildContext context, StatefulWidget page){
+    return Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => page
@@ -17,13 +13,17 @@ class NavigationUtil{
     );
   }
 
-  static void toStatelessPage(BuildContext context, StatelessWidget page){
-    Navigator.push(
+  static Future<dynamic> startStatelessPage(BuildContext context, StatelessWidget page){
+    return Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => page
       )
     );
+  }
+
+  static void finish(BuildContext context, {Object result }){
+    Navigator.pop(context, result);
   }
 
 }

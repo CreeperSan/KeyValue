@@ -162,7 +162,9 @@ class _IndexState extends State<IndexPage>{
 
   /// 按下了添加表
   void _onAddTableClick(){
-    NavigationUtil.toStatefulPage(context, AddTablePage());
+    NavigationUtil.startStatefulPage(context, AddTablePage()).then((value){
+      print(value);
+    });
   }
 
 }

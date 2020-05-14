@@ -58,20 +58,22 @@ class DatabaseUtils{
     db.close();
   }
 
-  void createTable(
+  Future<void> createTable(
       String name,
       int auth, {
       int iconColor = 0xff999999,
       int backgroundColor = 0xffFFFFFF,
       String description = ''
-  }) async {
-    const colorJson = {};
-    colorJson[ConstDatabaseTable.COLOR_ICON] = iconColor;
-    colorJson[ConstDatabaseTable.COLOR_BACKGROUND] = iconColor;
-    const extraJson = {};
-    extraJson[ConstDatabaseTable.EXTRA_DESCRIPTION] = description;
+  }){
+    dynamic colorJson = {
+      ConstDatabaseTable.COLOR_ICON : iconColor,
+      ConstDatabaseTable.COLOR_BACKGROUND : backgroundColor
+    };
+    dynamic extraJson = {
+      ConstDatabaseTable.EXTRA_DESCRIPTION : description
+    };
 
-    db.execute('insert into ${ConstDatabaseTable.TABLE_NAME} (' +
+    return db.execute('insert into ${ConstDatabaseTable.TABLE_NAME} (' +
           '${ConstDatabaseTable.KEY_NAME},'+
           '${ConstDatabaseTable.KEY_AUTH},'+
           '${ConstDatabaseTable.KEY_COLOR},'+
@@ -79,12 +81,12 @@ class DatabaseUtils{
           '${ConstDatabaseTable.KEY_MODIFY_TIME},'+
           '${ConstDatabaseTable.KEY_INFO}' +
         ') values (' +
-          '$name,'+
+          '\'$name\','+
           '$auth,'+
           '\'${jsonEncode(colorJson).toString()}\','+
-          'now(),'+
-          'now(),'+
-          '\'${jsonEncode(extraJson).toString()}"\''+
+          'strftime(\'%s\',\'now\'),'+
+          'strftime(\'%s\',\'now\'),'+
+          '\'${jsonEncode(extraJson).toString()}\''+
         ')');
   }
 

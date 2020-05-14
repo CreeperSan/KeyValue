@@ -8,6 +8,7 @@ class FormIconEditWidget extends StatefulWidget{
   final double paddingLeft;
   final double paddingRight;
   final double titleWidth;
+  final void Function() onClick;
 
   FormIconEditWidget(
     this.title,
@@ -17,6 +18,7 @@ class FormIconEditWidget extends StatefulWidget{
       this.paddingLeft = 8.0,
       this.paddingRight = 8.0,
       this.titleWidth = 96.0,
+      this.onClick,
   });
 
   @override
@@ -30,36 +32,39 @@ class _FormIconEditState extends State<FormIconEditWidget>{
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: widget.paddingTop,
-        bottom: widget.paddingBottom,
-        left: widget.paddingLeft,
-        right: widget.paddingRight,
-      ),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: widget.titleWidth,
-            child: Text(widget.title),
-          ),
-          Expanded(
-            child: Container(),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 8
+    return InkWell(
+      onTap: widget.onClick,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: widget.paddingTop,
+          bottom: widget.paddingBottom,
+          left: widget.paddingLeft,
+          right: widget.paddingRight,
+        ),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: widget.titleWidth,
+              child: Text(widget.title),
             ),
-            child: Icon(widget.icon),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(),
-            child: Icon(Icons.chevron_right,
-              color: Colors.grey,
-              size: 18,
+            Expanded(
+              child: Container(),
             ),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 8
+              ),
+              child: Icon(widget.icon),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(),
+              child: Icon(Icons.chevron_right,
+                color: Colors.grey,
+                size: 18,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

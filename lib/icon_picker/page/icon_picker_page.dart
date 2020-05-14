@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:keyvalue/base/utils/navigation_util.dart';
 import 'package:keyvalue/res/const_icon_id_map.dart';
 
 class IconPickerPage extends StatefulWidget{
+  static const RESULT_SUCCESS = 'success';
+  static const RESULT_ICON_ID = 'icon_id';
+  
   final List<int> iconDataList = [];
   int selectedIconID = IconIDMap.ICON_UNKNOWN;
+
+  IconPickerPage({
+    this.selectedIconID = IconIDMap.ICON_UNKNOWN,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -99,7 +107,10 @@ class _IconPickerState extends State<IconPickerPage>{
   }
 
   void _onIconConfirm(){
-
+    NavigationUtil.finish(context, result : {
+      IconPickerPage.RESULT_SUCCESS : true,
+      IconPickerPage.RESULT_ICON_ID : widget.selectedIconID,
+    });
   }
 
 }

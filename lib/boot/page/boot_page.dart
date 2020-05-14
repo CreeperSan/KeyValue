@@ -53,8 +53,8 @@ class BootState extends BaseState{
     // 延时2秒
     await TimeUtil.delay(0);
     // 关闭现有界面进入主界面
-    NavigationUtil.finishCurrentPage(context);
-    NavigationUtil.toStatefulPage(context, IndexPage());
+    NavigationUtil.finish(context);
+    NavigationUtil.startStatefulPage(context, IndexPage());
   }
 
 

@@ -55,7 +55,8 @@ class AddTableState extends State<AddTablePage>{
         children: <Widget>[
           FormSingleEditWidget(
             '标题',
-            widget.title
+            widget.title,
+            onChange: _onTitleChange,
           ),
           FormIconEditWidget(
             '图标',
@@ -81,6 +82,11 @@ class AddTableState extends State<AddTablePage>{
     );
   }
 
+
+  /// 标题名称改变了
+  void _onTitleChange(String value){
+    widget.title = value;
+  }
 
   /// 点击了图标选择
   void _onIconClick(){
@@ -125,12 +131,16 @@ class AddTableState extends State<AddTablePage>{
 
   /// 点击了创建表
   void _onCreateTableClick() async {
-    // TODO 检查值
+    if(widget.title.isEmpty){
+      print('请输入标题');
+      return;
+    }
     // 创建表
     DatabaseUtils db = await DatabaseUtils.getInstance();
     db.createTable(
       widget.title,
       AuthFlag.NO_AUTH,
+      icon: widget.iconID,
       iconColor: widget.iconColor,
       backgroundColor: widget.cardBackgroundColor,
       description: ''

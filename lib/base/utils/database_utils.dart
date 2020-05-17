@@ -1,3 +1,4 @@
+import 'package:keyvalue/res/const_icon_id_map.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sql.dart';
 import 'dart:convert';
@@ -61,16 +62,18 @@ class DatabaseUtils{
   Future<void> createTable(
       String name,
       int auth, {
+      int icon = IconIDMap.ICON_UNKNOWN,
       int iconColor = 0xff999999,
       int backgroundColor = 0xffFFFFFF,
-      String description = ''
+      String description = '',
   }){
     dynamic colorJson = {
       ConstDatabaseTable.COLOR_ICON : iconColor,
       ConstDatabaseTable.COLOR_BACKGROUND : backgroundColor
     };
     dynamic extraJson = {
-      ConstDatabaseTable.EXTRA_DESCRIPTION : description
+      ConstDatabaseTable.EXTRA_DESCRIPTION : description,
+      ConstDatabaseTable.EXTRA_ICON : icon,
     };
 
     return db.execute('insert into ${ConstDatabaseTable.TABLE_NAME} (' +
@@ -93,8 +96,21 @@ class DatabaseUtils{
   Future<List<TableModel>> queryAllTables() async {
     List<Map> queryResult = await db.rawQuery('select * from ${ConstDatabaseTable.TABLE_NAME}');
     List<TableModel> returnList = [];
-    for(Map map in queryResult){
-      TableModel model = TableModel('');
+    for(dynamic map in queryResult){
+      Map<String, dynamic> colorMap = jsonDecode(map[ConstDatabaseTable.KEY_COLOR]);
+      Map<String, dynamic> infoMap = jsonDecode(map[ConstDatabaseTable.KEY_INFO]);
+      TableModel model = TableModel(
+        map[ConstDatabaseTable.KEY_ID],
+        map[ConstDatabaseTable.KEY_NAME],
+        icon: infoMap[ConstDatabaseTable.EXTRA_ICON],
+        auth: map[ConstDatabaseTable.KEY_AUTH],
+        iconColor: colorMap[ConstDatabaseTable.COLOR_ICON],
+        backgroundColor: colorMap[ConstDatabaseTable.COLOR_BACKGROUND],
+        createTime: map[ConstDatabaseTable.KEY_CREATE_TIME],
+        modifyTime: map[ConstDatabaseTable.KEY_MODIFY_TIME],
+        description: infoMap[ConstDatabaseTable.EXTRA_DESCRIPTION],
+      );
+      print(map);
       returnList.add(model);
     }
     return returnList;
@@ -141,6 +157,7 @@ class ConstDatabaseTable{
   static const COLOR_BACKGROUND = 'bg';
 
   static const EXTRA_DESCRIPTION = 'description';
+  static const EXTRA_ICON = 'icon';
 }
 
 // 一条一条数据

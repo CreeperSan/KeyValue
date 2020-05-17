@@ -3,10 +3,8 @@ import 'package:keyvalue/base/widget/base_stateless_widget.dart';
 
 class TableWidget extends BaseStatelessWidget{
   final String _name;                         // 名称
-  final IconData _iconData;                   // 图标
-  final bool _isPin;                          // 是否需要pin校验
-  final bool _isFingerprint;                  // 是否需要指纹校验
-  final bool _isCode;                         // 是否需要安全码校验
+  final IconData iconData;                   // 图标
+  final int auth;                             // 安全校验方式
   final int iconColor;                        // 图标颜色
   final int backgroundColor;                  // 背景颜色
   final void Function() onClick;              // 点击事件
@@ -14,10 +12,8 @@ class TableWidget extends BaseStatelessWidget{
 
   TableWidget(
     this._name,
-    this._iconData,
-    this._isPin,
-    this._isFingerprint,
-    this._isCode,{
+    this.iconData,
+    this.auth,{
       this.iconColor = 0xff000000,
       this.backgroundColor = 0xffFFFFFF,
       this.onClick,
@@ -60,7 +56,7 @@ class TableWidget extends BaseStatelessWidget{
               Container(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Icon(_iconData,
+                  child: Icon(iconData,
                     size: 64,
                     color: Color(iconColor),
                   ),
@@ -98,7 +94,7 @@ class TableWidget extends BaseStatelessWidget{
                               maxLines: 3,
                             ),
                           ),
-                          Icon(_iconData)
+                          Icon(Icons.lock_open)
                         ],
                       ),
                     ),

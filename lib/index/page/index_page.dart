@@ -6,6 +6,7 @@ import 'package:keyvalue/index/widget/index_table_widget.dart';
 import 'package:keyvalue/model/table_model.dart';
 import 'package:keyvalue/base/widget/status_hint_widget.dart';
 import 'package:keyvalue/base/utils/database_utils.dart';
+import 'package:keyvalue/res/const_icon_id_map.dart';
 
 class IndexPage extends BaseStatefulPage{
   static const STATE_LOADING  = 0;  // 加载中
@@ -40,6 +41,8 @@ class _IndexState extends State<IndexPage>{
         widget.state = IndexPage.STATE_EMPTY;
       }else{
         widget.state = IndexPage.STATE_LIST;
+        widget.tableModelList.clear();
+        widget.tableModelList.addAll(queryList);
       }
     }catch(e){
       widget.state = IndexPage.STATE_ERROR;
@@ -148,13 +151,11 @@ class _IndexState extends State<IndexPage>{
   /// 生成 Item 的 Widget
   TableWidget buildTableItemWidget(BuildContext context, int index, TableModel model){
     return TableWidget(
-      '未命名 $index',
-      Icons.print,
-      true,
-      true,
-      true,
-      iconColor: 0xff000000,
-      backgroundColor: 0xffFFFFFF,
+      model.name,
+      IconIDMap.getIconByID(model.icon),
+      model.auth,
+      iconColor: model.iconColor,
+      backgroundColor: model.backgroundColor,
       onClick: () => print('点击了 $index'),
       onLongClick: () => print('长按了 $index'),
     );

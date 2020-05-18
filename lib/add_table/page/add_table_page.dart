@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keyvalue/base/page/base_stateful_page.dart';
 import 'package:keyvalue/base/utils/database_utils.dart';
 import 'package:keyvalue/base/utils/navigation_util.dart';
+import 'package:keyvalue/base/utils/widget_utils.dart';
 import 'package:keyvalue/base/widget/form_single_edit_widget.dart';
 import 'package:keyvalue/base/widget/form_icon_edit_widget.dart';
 import 'package:keyvalue/base/widget/form_switch_edit_widget.dart';
@@ -132,7 +133,7 @@ class AddTableState extends State<AddTablePage>{
   /// 点击了创建表
   void _onCreateTableClick() async {
     if(widget.title.isEmpty){
-      print('请输入标题');
+      WidgetUtils.showSimpleDialogHint(context, '请输入标题');
       return;
     }
     // 创建表
@@ -151,7 +152,7 @@ class AddTableState extends State<AddTablePage>{
       });
     }, onError: (object){
       // 创建失败
-      print('失败！');
+      WidgetUtils.showSimpleDialogHint(context, '创建失败');
     });
   }
 

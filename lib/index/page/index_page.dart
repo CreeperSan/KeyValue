@@ -3,6 +3,7 @@ import 'package:keyvalue/add_table/page/add_table_page.dart';
 import 'package:keyvalue/base/page/base_stateful_page.dart';
 import 'package:keyvalue/base/utils/navigation_util.dart';
 import 'package:keyvalue/index/widget/index_table_widget.dart';
+import 'package:keyvalue/key_value/page/key_value_page.dart';
 import 'package:keyvalue/model/table_model.dart';
 import 'package:keyvalue/base/widget/status_hint_widget.dart';
 import 'package:keyvalue/base/utils/database_utils.dart';
@@ -156,16 +157,30 @@ class _IndexState extends State<IndexPage>{
       model.auth,
       iconColor: model.iconColor,
       backgroundColor: model.backgroundColor,
-      onClick: () => print('点击了 $index'),
-      onLongClick: () => print('长按了 $index'),
+      onClick: () => _onTableClick(index, model),
+      onLongClick: () => _onTableLongClick(index, model),
     );
   }
 
   /// 按下了添加表
   void _onAddTableClick(){
     NavigationUtil.startStatefulPage(context, AddTablePage()).then((value){
-      print(value);
+      if(value == null){
+        return;
+      }
+      // 如果添加成功，则刷新界面
+      if(value[AddTablePage.RESULT_SUCCESS]){
+        actionAsync();
+      }
     });
+  }
+
+  void _onTableClick(int position, TableModel model){
+    NavigationUtil.startStatefulPage(context, KeyValuePage(model));
+  }
+
+  void _onTableLongClick(int position, TableModel model){
+
   }
 
 }

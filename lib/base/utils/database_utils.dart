@@ -59,6 +59,7 @@ class DatabaseUtils{
     db.close();
   }
 
+  /// 创建表
   Future<void> createTable(
       String name,
       int auth, {
@@ -93,6 +94,7 @@ class DatabaseUtils{
         ')');
   }
 
+  /// 查找所有的表
   Future<List<TableModel>> queryAllTables() async {
     List<Map> queryResult = await db.rawQuery('select * from ${ConstDatabaseTable.TABLE_NAME}');
     List<TableModel> returnList = [];
@@ -117,7 +119,7 @@ class DatabaseUtils{
   }
 
 
-
+  // 创建键值对
   void createKeyValue(
     int tableID,
     String content
@@ -125,10 +127,10 @@ class DatabaseUtils{
     await db.execute('insert into ${ConstDatabaseKeyValue.TABLE_NAME} (' +
       '${ConstDatabaseKeyValue.KEY_TABLE_ID},' +
       '${ConstDatabaseKeyValue.KEY_CONTENT}' +
-    ') values {' +
+    ') values (' +
       '$tableID,' +
-      '$content' +
-    '}');
+      '\'$content\'' +
+    ')');
   }
 
 }
